@@ -45,6 +45,12 @@ module.exports = {
         allowAsStatement: true,
       },
     ],
+    'react/function-component-definition': [
+      'error',
+      {
+        namedComponents: 'arrow-function',
+      },
+    ],
   },
   settings: {
     'import/resolver': {
