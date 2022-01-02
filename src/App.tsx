@@ -2,6 +2,7 @@ import {
   Button,
   Flex,
   Heading,
+  Spacer,
   Textarea,
   UnorderedList,
 } from '@chakra-ui/react'
@@ -9,9 +10,10 @@ import CustomListItem from './components/CustomListItem'
 
 const App = () => (
   <Flex direction="column">
-    <Flex border="1px solid #333" h="45px">
+    <Flex border="1px solid #333" h="45px" alignItems="center" paddingX="10px">
       <Heading>lebmirror</Heading>
-      <Button colorScheme="blue" marginLeft="auto">
+      <Spacer />
+      <Button colorScheme="blue" size="sm">
         ログイン
       </Button>
     </Flex>
@@ -24,9 +26,8 @@ const App = () => (
           <CustomListItem>section list 4</CustomListItem>
           <CustomListItem>section list 5</CustomListItem>
         </UnorderedList>
-        <Button colorScheme="blue" marginTop="auto">
-          セクション作成
-        </Button>
+        <Spacer />
+        <Button colorScheme="blue">セクション作成</Button>
       </Flex>
       <Flex border="1px solid #333" w="170px" direction="column" padding="10px">
         <UnorderedList listStyleType="none" margin="0">
@@ -36,9 +37,8 @@ const App = () => (
           <CustomListItem>page list 4</CustomListItem>
           <CustomListItem>page list 5</CustomListItem>
         </UnorderedList>
-        <Button colorScheme="blue" marginTop="auto">
-          ページ作成
-        </Button>
+        <Spacer />
+        <Button colorScheme="blue">ページ作成</Button>
       </Flex>
       <Flex flex="1" border="1px solid #333" direction="column" padding="10px">
         <Heading as="h3" marginBottom="10px">
