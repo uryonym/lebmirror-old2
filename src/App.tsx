@@ -1,12 +1,16 @@
 import {
   Button,
+  Editable,
+  EditableInput,
+  EditablePreview,
   Flex,
   Heading,
   Spacer,
-  Textarea,
   UnorderedList,
 } from '@chakra-ui/react'
 import CustomListItem from './components/CustomListItem'
+import NewPageModal from './components/NewPageModal'
+import NewSectionModal from './components/NewSectionModal'
 
 const App = () => (
   <Flex direction="column">
@@ -27,7 +31,7 @@ const App = () => (
           <CustomListItem>section list 5</CustomListItem>
         </UnorderedList>
         <Spacer />
-        <Button colorScheme="blue">セクション作成</Button>
+        <NewSectionModal />
       </Flex>
       <Flex border="1px solid #333" w="170px" direction="column" padding="10px">
         <UnorderedList listStyleType="none" margin="0">
@@ -38,13 +42,16 @@ const App = () => (
           <CustomListItem>page list 5</CustomListItem>
         </UnorderedList>
         <Spacer />
-        <Button colorScheme="blue">ページ作成</Button>
+        <NewPageModal />
       </Flex>
       <Flex flex="1" border="1px solid #333" direction="column" padding="10px">
         <Heading as="h3" marginBottom="10px">
           タイトル
         </Heading>
-        <Textarea flex="1" />
+        <Editable flex="1" defaultValue="テキストテスト">
+          <EditablePreview />
+          <EditableInput />
+        </Editable>
       </Flex>
     </Flex>
   </Flex>
