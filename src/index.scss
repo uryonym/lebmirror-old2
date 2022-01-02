@@ -1,0 +1,18 @@
+body {
+  margin: 0;
+  font-family: 'Avenir', 'Helvetica Neue', 'Helvetica', 'Arial',
+    'ヒラギノ角ゴ Pro W3', 'Hiragino Kaku Gothic Pro', 'メイリオ', 'Meiryo',
+    '游ゴシック', 'Yu Gothic', 'ＭＳ Ｐゴシック', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.main {
+  height: calc(100vh - 45px);
+}
+
+.list-item {
+  &:hover {
+    background: #ccc;
+  }
+}
