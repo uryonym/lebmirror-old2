@@ -1,7 +1,7 @@
 import { StrictMode } from 'react'
 import { ChakraProvider } from '@chakra-ui/react'
 import ReactDOM from 'react-dom'
-import './index.css'
+import './index.scss'
 import App from './App'
 import reportWebVitals from './reportWebVitals'
 
