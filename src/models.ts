@@ -1,26 +1,26 @@
 export type IUser = {
   displayName: string | undefined
-  photoURL: string | undefined
+  email: string | undefined
 }
 
 export type INote = {
-  id: string
-  user: IUser
   name: string
+  user: IUser
   createdAt: Date
+  id: string
 }
 
 export type ISection = {
-  id: string
-  note_id: string
   name: string
+  note: INote
   createdAt: Date
+  id: string
 }
 
 export type IPage = {
-  id: string
-  section_id: string
   name: string
   content: string
+  section: ISection
   createdAt: Date
+  id: string
 }
