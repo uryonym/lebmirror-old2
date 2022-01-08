@@ -9,8 +9,9 @@ import {
   Spacer,
   Text,
 } from '@chakra-ui/react'
-import { getFirebaseAuth } from 'firebaseConfig'
+import { fbAuth } from 'firebaseConfig'
 import { INote, IUser } from 'models'
+import { signOut } from 'firebase/auth'
 import SectionList from './SectionList'
 import PageList from './PageList'
 import NewNoteModal from './NewNoteModal'
@@ -43,10 +44,8 @@ const notes: INote[] = [
 ]
 
 const Home = () => {
-  const auth = getFirebaseAuth()
-
   const clickSignOut = async () => {
-    await auth.signOut()
+    await signOut(fbAuth)
   }
 
   return (
