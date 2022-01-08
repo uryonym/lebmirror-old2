@@ -1,18 +1,19 @@
 export type IUser = {
   displayName: string | undefined
   email: string | undefined
+  uid: string | undefined
 }
 
 export type INote = {
   name: string
-  user: IUser
+  uid: string
   createdAt: Date
   id: string
 }
 
 export type ISection = {
   name: string
-  note: INote
+  note_id: string
   createdAt: Date
   id: string
 }
@@ -20,7 +21,7 @@ export type ISection = {
 export type IPage = {
   name: string
   content: string
-  section: ISection
+  section_id: string
   createdAt: Date
   id: string
 }

@@ -5,11 +5,42 @@ import {
   EditablePreview,
   Flex,
   Heading,
+  Select,
   Spacer,
+  Text,
 } from '@chakra-ui/react'
 import { getFirebaseAuth } from 'firebaseConfig'
+import { INote, IUser } from 'models'
 import SectionList from './SectionList'
 import PageList from './PageList'
+import NewNoteModal from './NewNoteModal'
+
+const user1: IUser = {
+  displayName: 'yoneyama ryo',
+  email: 'uryonym@gmail.com',
+  uid: 'user_id1',
+}
+
+const notes: INote[] = [
+  {
+    name: 'ノート名１',
+    uid: 'user_id1',
+    createdAt: new Date(),
+    id: 'note_id1',
+  },
+  {
+    name: 'ノート名２',
+    uid: 'user_id1',
+    createdAt: new Date(),
+    id: 'note_id2',
+  },
+  {
+    name: 'ノート名３',
+    uid: 'user_id1',
+    createdAt: new Date(),
+    id: 'note_id3',
+  },
+]
 
 const Home = () => {
   const auth = getFirebaseAuth()
@@ -27,7 +58,14 @@ const Home = () => {
         paddingX="10px"
       >
         <Heading>lebmirror</Heading>
+        <Select placholder="ノートを選択" width="200px">
+          {notes.map((note: INote) => (
+            <option value={note.id}>{note.name}</option>
+          ))}
+        </Select>
+        <NewNoteModal />
         <Spacer />
+        <Text marginEnd="10px">{user1.displayName}</Text>
         <Button colorScheme="red" size="sm" onClick={clickSignOut}>
           サインアウト
         </Button>
