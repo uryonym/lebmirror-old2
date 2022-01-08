@@ -1,7 +1,7 @@
 /* eslint-disable react/jsx-no-constructed-context-values */
 import { createContext, useContext, useState, FC, useEffect } from 'react'
 import { User } from 'firebase/auth'
-import { getFirebaseAuth } from '../firebase'
+import { getFirebaseAuth } from 'firebaseConfig'
 
 type AuthContextProps = {
   user: User | null
