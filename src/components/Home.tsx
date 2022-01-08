@@ -6,12 +6,10 @@ import {
   Flex,
   Heading,
   Spacer,
-  UnorderedList,
 } from '@chakra-ui/react'
-import CustomListItem from 'components/CustomListItem'
-import NewPageModal from 'components/NewPageModal'
-import NewSectionModal from 'components/NewSectionModal'
 import { getFirebaseAuth } from 'firebaseConfig'
+import SectionList from './SectionList'
+import PageList from './PageList'
 
 const Home = () => {
   const auth = getFirebaseAuth()
@@ -30,43 +28,13 @@ const Home = () => {
       >
         <Heading>lebmirror</Heading>
         <Spacer />
-        <Button colorScheme="blue" size="sm" onClick={clickSignOut}>
+        <Button colorScheme="red" size="sm" onClick={clickSignOut}>
           サインアウト
         </Button>
       </Flex>
       <Flex className="main">
-        <Flex
-          border="1px solid #333"
-          w="170px"
-          direction="column"
-          padding="10px"
-        >
-          <UnorderedList listStyleType="none" margin="0">
-            <CustomListItem>section list 1</CustomListItem>
-            <CustomListItem>section list 2</CustomListItem>
-            <CustomListItem>section list 3</CustomListItem>
-            <CustomListItem>section list 4</CustomListItem>
-            <CustomListItem>section list 5</CustomListItem>
-          </UnorderedList>
-          <Spacer />
-          <NewSectionModal />
-        </Flex>
-        <Flex
-          border="1px solid #333"
-          w="170px"
-          direction="column"
-          padding="10px"
-        >
-          <UnorderedList listStyleType="none" margin="0">
-            <CustomListItem>page list 1</CustomListItem>
-            <CustomListItem>page list 2</CustomListItem>
-            <CustomListItem>page list 3</CustomListItem>
-            <CustomListItem>page list 4</CustomListItem>
-            <CustomListItem>page list 5</CustomListItem>
-          </UnorderedList>
-          <Spacer />
-          <NewPageModal />
-        </Flex>
+        <SectionList />
+        <PageList />
         <Flex
           flex="1"
           border="1px solid #333"

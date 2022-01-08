@@ -21,5 +21,6 @@ export type IPage = {
   id: string
   section_id: string
   name: string
+  content: string
   createdAt: Date
 }
