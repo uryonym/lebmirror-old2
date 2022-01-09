@@ -12,6 +12,8 @@ import {
 import { fbAuth } from 'firebaseConfig'
 import { INote, IUser } from 'models'
 import { signOut } from 'firebase/auth'
+import { useState } from 'react'
+import { getNotes } from 'api/notesApi'
 import SectionList from './SectionList'
 import PageList from './PageList'
 import NewNoteModal from './NewNoteModal'
@@ -22,28 +24,14 @@ const user1: IUser = {
   uid: 'user_id1',
 }
 
-const notes: INote[] = [
-  {
-    name: 'ノート名１',
-    uid: 'user_id1',
-    createdAt: new Date(),
-    id: 'note_id1',
-  },
-  {
-    name: 'ノート名２',
-    uid: 'user_id1',
-    createdAt: new Date(),
-    id: 'note_id2',
-  },
-  {
-    name: 'ノート名３',
-    uid: 'user_id1',
-    createdAt: new Date(),
-    id: 'note_id3',
-  },
-]
-
 const Home = () => {
+  const [notes, setNotes] = useState<INote[]>()
+
+  const clickGetNotes = async () => {
+    const data = await getNotes()
+    setNotes(data)
+  }
+
   const clickSignOut = async () => {
     await signOut(fbAuth)
   }
@@ -57,10 +45,16 @@ const Home = () => {
         paddingX="10px"
       >
         <Heading>lebmirror</Heading>
-        <Select placholder="ノートを選択" width="200px">
-          {notes.map((note: INote) => (
-            <option value={note.id}>{note.name}</option>
-          ))}
+        <Button colorScheme="blue" onClick={clickGetNotes}>
+          ノート一覧取得
+        </Button>
+        <Select placeholder="ノートを選択" width="200px">
+          {notes &&
+            notes.map((note: INote) => (
+              <option key={note.id} value={note.id}>
+                {note.name}
+              </option>
+            ))}
         </Select>
         <NewNoteModal />
         <Spacer />

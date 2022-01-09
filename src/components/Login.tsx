@@ -5,15 +5,13 @@ import {
   User,
   UserCredential,
 } from 'firebase/auth'
-import { getFirebaseAuth } from 'firebaseConfig'
+import { fbAuth } from 'firebaseConfig'
 
 const Login = () => {
-  const auth = getFirebaseAuth()
-
   const clickSignIn = async () => {
     const provider = new GoogleAuthProvider()
     const signInResult: UserCredential = await signInWithRedirect(
-      auth,
+      fbAuth,
       provider
     )
     const currentUser: User = signInResult.user
