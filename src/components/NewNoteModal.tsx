@@ -11,7 +11,7 @@ import {
   Input,
   useDisclosure,
 } from '@chakra-ui/react'
-import { addNotes } from 'api/notesApi'
+import { addNote } from 'api/notesApi'
 import { useAuth } from 'contexts/authContext'
 import { INote } from 'models'
 import { ChangeEvent, useRef, useState } from 'react'
@@ -34,7 +34,7 @@ const NewNoteModal = () => {
       createdAt: undefined,
       id: undefined,
     }
-    await addNotes(data).catch((e) => {
+    await addNote(data).catch((e) => {
       console.log(e)
     })
   }

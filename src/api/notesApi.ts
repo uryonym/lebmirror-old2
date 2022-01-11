@@ -1,5 +1,4 @@
 import {
-  doc,
   collection,
   getDocs,
   QuerySnapshot,
@@ -7,7 +6,7 @@ import {
   addDoc,
 } from 'firebase/firestore'
 import { fbDb } from 'firebaseConfig'
-import { INote } from 'models'
+import { INote, ISection } from 'models'
 
 export const getNotes = async () => {
   const snapShot = (await getDocs(
@@ -22,7 +21,7 @@ export const getNotes = async () => {
   return data
 }
 
-export const addNotes = async (note: INote) => {
+export const addNote = async (note: INote) => {
   const data = {
     name: note.name,
     uid: note.uid,
@@ -33,4 +32,13 @@ export const addNotes = async (note: INote) => {
 
 export const getSections = async () => {
   const snapShot = await getDocs(collection(fbDb, 'sections'))
+}
+
+export const addSection = async (section: ISection) => {
+  const data = {
+    name: section.name,
+    note_id: section.note_id,
+    createdAt: Timestamp.now(),
+  }
+  await addDoc(collection(fbDb, 'sections'), data)
 }
