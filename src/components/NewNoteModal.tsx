@@ -11,11 +11,34 @@ import {
   Input,
   useDisclosure,
 } from '@chakra-ui/react'
-import { useRef } from 'react'
+import { addNotes } from 'api/notesApi'
+import { useAuth } from 'contexts/authContext'
+import { INote } from 'models'
+import { ChangeEvent, useRef, useState } from 'react'
 
 const NewNoteModal = () => {
+  const [noteName, setNoteName] = useState<string>('')
+  const { user } = useAuth()
   const { isOpen, onOpen, onClose } = useDisclosure()
   const initialRef = useRef<HTMLInputElement>(null)
+
+  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setNoteName(e.target.value)
+  }
+
+  const clickCreateNote = async () => {
+    onClose()
+    const data: INote = {
+      name: noteName,
+      uid: user?.uid ?? '',
+      createdAt: undefined,
+      id: undefined,
+    }
+    await addNotes(data).catch((e) => {
+      console.log(e)
+    })
+  }
+
   return (
     <>
       <Button colorScheme="blue" onClick={onOpen}>
@@ -28,11 +51,16 @@ const NewNoteModal = () => {
           <ModalCloseButton />
           <ModalBody>
             <FormControl>
-              <Input ref={initialRef} placeholder="ノート名を入力" />
+              <Input
+                ref={initialRef}
+                placeholder="ノート名を入力"
+                value={noteName}
+                onChange={(e) => handleChange(e)}
+              />
             </FormControl>
           </ModalBody>
           <ModalFooter>
-            <Button colorScheme="blue" onClick={onClose}>
+            <Button colorScheme="blue" onClick={clickCreateNote}>
               作成
             </Button>
           </ModalFooter>

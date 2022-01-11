@@ -7,8 +7,8 @@ export type IUser = {
 export type INote = {
   name: string
   uid: string
-  createdAt: Date
-  id: string
+  createdAt: Date | undefined
+  id: string | undefined
 }
 
 export type ISection = {
