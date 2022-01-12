@@ -55,7 +55,7 @@ const NewNoteModal = () => {
                 ref={initialRef}
                 placeholder="ノート名を入力"
                 value={noteName}
-                onChange={(e) => handleChange(e)}
+                onChange={handleChange}
               />
             </FormControl>
           </ModalBody>

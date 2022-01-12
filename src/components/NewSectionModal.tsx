@@ -1,5 +1,6 @@
 import {
   Button,
+  Text,
   Modal,
   ModalOverlay,
   ModalContent,
@@ -12,15 +13,16 @@ import {
   useDisclosure,
 } from '@chakra-ui/react'
 import { addSection } from 'api/notesApi'
-import { useAuth } from 'contexts/authContext'
+import { useNote } from 'contexts/noteContext'
 import { ISection } from 'models'
 import { ChangeEvent, useRef, useState } from 'react'
 
 const NewSectionModal = () => {
   const [sectionName, setSectionName] = useState<string>('')
-  const { user } = useAuth()
   const { isOpen, onOpen, onClose } = useDisclosure()
   const initialRef = useRef<HTMLInputElement>(null)
+  const { noteId } = useNote()
+  const isEmptyNote: boolean = noteId === undefined
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     setSectionName(e.target.value)
@@ -30,7 +32,7 @@ const NewSectionModal = () => {
     onClose()
     const data: ISection = {
       name: sectionName,
-      note_id: 'rWwBgr98ZLaPrRun64NT',
+      note_id: noteId ?? '',
       createdAt: undefined,
       id: undefined,
     }
@@ -50,17 +52,25 @@ const NewSectionModal = () => {
           <ModalHeader>新規セクションの作成</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
-            <FormControl>
-              <Input
-                ref={initialRef}
-                placeholder="セクション名を入力"
-                value={sectionName}
-                onChange={(e) => handleChange(e)}
-              />
-            </FormControl>
+            {isEmptyNote ? (
+              <Text>ノートを選択してください。</Text>
+            ) : (
+              <FormControl>
+                <Input
+                  ref={initialRef}
+                  placeholder="セクション名を入力"
+                  value={sectionName}
+                  onChange={handleChange}
+                />
+              </FormControl>
+            )}
           </ModalBody>
           <ModalFooter>
-            <Button colorScheme="blue" onClick={clickCreateSection}>
+            <Button
+              colorScheme="blue"
+              onClick={clickCreateSection}
+              isDisabled={isEmptyNote}
+            >
               作成
             </Button>
           </ModalFooter>

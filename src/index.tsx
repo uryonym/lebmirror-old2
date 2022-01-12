@@ -2,6 +2,7 @@ import { StrictMode } from 'react'
 import { ChakraProvider } from '@chakra-ui/react'
 import ReactDOM from 'react-dom'
 import './index.scss'
+import { NoteProvider } from 'contexts/noteContext'
 import App from './App'
 import reportWebVitals from './reportWebVitals'
 import { AuthProvider } from './contexts/authContext'
@@ -9,9 +10,11 @@ import { AuthProvider } from './contexts/authContext'
 ReactDOM.render(
   <StrictMode>
     <AuthProvider>
-      <ChakraProvider>
-        <App />
-      </ChakraProvider>
+      <NoteProvider>
+        <ChakraProvider>
+          <App />
+        </ChakraProvider>
+      </NoteProvider>
     </AuthProvider>
   </StrictMode>,
   document.getElementById('root')

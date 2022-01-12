@@ -12,8 +12,9 @@ import {
 import { fbAuth } from 'firebaseConfig'
 import { INote, IUser } from 'models'
 import { signOut } from 'firebase/auth'
-import { useState } from 'react'
+import { ChangeEvent, useState } from 'react'
 import { getNotes } from 'api/notesApi'
+import { useNote } from 'contexts/noteContext'
 import SectionList from './SectionList'
 import PageList from './PageList'
 import NewNoteModal from './NewNoteModal'
@@ -26,6 +27,7 @@ const user1: IUser = {
 
 const Home = () => {
   const [notes, setNotes] = useState<INote[]>()
+  const { setNoteId } = useNote()
 
   const clickGetNotes = async () => {
     const data = await getNotes()
@@ -34,6 +36,10 @@ const Home = () => {
 
   const clickSignOut = async () => {
     await signOut(fbAuth)
+  }
+
+  const handleChangeNote = (e: ChangeEvent<HTMLSelectElement>) => {
+    setNoteId(!e.target.value ? undefined : e.target.value)
   }
 
   return (
@@ -48,7 +54,11 @@ const Home = () => {
         <Button colorScheme="blue" onClick={clickGetNotes}>
           ノート一覧取得
         </Button>
-        <Select placeholder="ノートを選択" width="200px">
+        <Select
+          placeholder="ノートを選択"
+          width="200px"
+          onChange={handleChangeNote}
+        >
           {notes &&
             notes.map((note: INote) => (
               <option key={note.id} value={note.id}>
