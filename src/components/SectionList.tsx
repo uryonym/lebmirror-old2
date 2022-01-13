@@ -1,39 +1,37 @@
 import { Flex, Spacer, UnorderedList } from '@chakra-ui/react'
+import { getSections } from 'api/notesApi'
+import { useNote } from 'contexts/noteContext'
 import { ISection } from 'models'
+import { useEffect, useState } from 'react'
 import CustomListItem from './CustomListItem'
 import NewSectionModal from './NewSectionModal'
 
-const sections: ISection[] = [
-  {
-    name: 'セクション名１',
-    note_id: 'note_id1',
-    createdAt: new Date(),
-    id: 'section_id1',
-  },
-  {
-    name: 'セクション名２',
-    note_id: 'note_id1',
-    createdAt: new Date(),
-    id: 'section_id2',
-  },
-  {
-    name: 'セクション名３',
-    note_id: 'note_id1',
-    createdAt: new Date(),
-    id: 'section_id3',
-  },
-]
+const SectionList = () => {
+  const [sections, setSections] = useState<ISection[]>([])
+  const { noteId } = useNote()
+  useEffect(() => {
+    const f = async () => {
+      if (noteId) {
+        const data = await getSections(noteId)
+        setSections(data)
+      }
+    }
 
-const SectionList = () => (
-  <Flex border="1px solid #333" w="170px" direction="column" padding="10px">
-    <UnorderedList listStyleType="none" margin="0">
-      {sections.map((section: ISection) => (
-        <CustomListItem key={section.id}>{section.name}</CustomListItem>
-      ))}
-    </UnorderedList>
-    <Spacer />
-    <NewSectionModal />
-  </Flex>
-)
+    if (noteId !== undefined) {
+      f().catch((e) => console.log(e))
+    }
+  }, [noteId])
+  return (
+    <Flex border="1px solid #333" w="170px" direction="column" padding="10px">
+      <UnorderedList listStyleType="none" margin="0">
+        {sections.map((section: ISection) => (
+          <CustomListItem key={section.id}>{section.name}</CustomListItem>
+        ))}
+      </UnorderedList>
+      <Spacer />
+      <NewSectionModal />
+    </Flex>
+  )
+}
 
 export default SectionList

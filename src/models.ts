@@ -13,7 +13,7 @@ export type INote = {
 
 export type ISection = {
   name: string
-  note_id: string
+  noteId: string
   createdAt: Date | undefined
   id: string | undefined
 }
@@ -21,7 +21,7 @@ export type ISection = {
 export type IPage = {
   name: string
   content: string
-  section_id: string
+  sectionId: string
   createdAt: Date
   id: string
 }

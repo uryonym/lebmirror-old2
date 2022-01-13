@@ -26,7 +26,7 @@ const user1: IUser = {
 }
 
 const Home = () => {
-  const [notes, setNotes] = useState<INote[]>()
+  const [notes, setNotes] = useState<INote[]>([])
   const { setNoteId } = useNote()
 
   const clickGetNotes = async () => {
@@ -59,12 +59,11 @@ const Home = () => {
           width="200px"
           onChange={handleChangeNote}
         >
-          {notes &&
-            notes.map((note: INote) => (
-              <option key={note.id} value={note.id}>
-                {note.name}
-              </option>
-            ))}
+          {notes.map((note: INote) => (
+            <option key={note.id} value={note.id}>
+              {note.name}
+            </option>
+          ))}
         </Select>
         <NewNoteModal />
         <Spacer />

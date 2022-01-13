@@ -32,7 +32,7 @@ const NewSectionModal = () => {
     onClose()
     const data: ISection = {
       name: sectionName,
-      note_id: noteId ?? '',
+      noteId: noteId!,
       createdAt: undefined,
       id: undefined,
     }
