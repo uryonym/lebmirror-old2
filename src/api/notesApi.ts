@@ -8,7 +8,7 @@ import {
   query,
 } from 'firebase/firestore'
 import { fbDb } from 'firebaseConfig'
-import { INote, ISection } from 'models'
+import { INote, IPage, ISection } from 'models'
 
 export const getNotes = async () => {
   const snapShot = (await getDocs(
@@ -52,4 +52,29 @@ export const addSection = async (section: ISection) => {
     createdAt: Timestamp.now(),
   }
   await addDoc(collection(fbDb, 'sections'), data)
+}
+
+export const getPages = async (sectionId: string) => {
+  const snapShot = (await getDocs(
+    query(collection(fbDb, 'pages'), where('sectionId', '==', sectionId))
+  )) as QuerySnapshot<IPage>
+
+  const data: IPage[] = snapShot.docs.map((document) => ({
+    name: document.data().name,
+    content: document.data().content,
+    sectionId: document.data().sectionId,
+    createdAt: document.data().createdAt,
+    id: document.id,
+  }))
+  return data
+}
+
+export const addPage = async (page: IPage) => {
+  const data = {
+    name: page.name,
+    content: page.content,
+    sectionId: page.sectionId,
+    createdAt: Timestamp.now(),
+  }
+  await addDoc(collection(fbDb, 'pages'), data)
 }

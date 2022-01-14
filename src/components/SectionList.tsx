@@ -11,14 +11,12 @@ const SectionList = () => {
   const { noteId, setSectionId } = useNote()
 
   useEffect(() => {
-    const f = async () => {
-      if (noteId) {
+    if (noteId) {
+      const f = async () => {
         const data = await getSections(noteId)
         setSections(data)
       }
-    }
 
-    if (noteId !== undefined) {
       f().catch((e) => console.log(e))
     }
   }, [noteId])

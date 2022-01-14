@@ -22,6 +22,6 @@ export type IPage = {
   name: string
   content: string
   sectionId: string
-  createdAt: Date
-  id: string
+  createdAt: Date | undefined
+  id: string | undefined
 }
