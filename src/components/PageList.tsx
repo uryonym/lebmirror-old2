@@ -11,13 +11,9 @@ const PageList = () => {
   const { sectionId, setPageId } = useNote()
 
   useEffect(() => {
-    console.log(sectionId)
-
     if (sectionId) {
       const f = async () => {
         const data = await getPages(sectionId)
-        console.log(data)
-
         setPages(data)
       }
 
@@ -25,11 +21,17 @@ const PageList = () => {
     }
   }, [sectionId])
 
+  const clickPage = (pageId: string | undefined) => {
+    setPageId(pageId)
+  }
+
   return (
     <Flex border="1px solid #333" w="170px" direction="column" padding="10px">
       <UnorderedList listStyleType="none" margin="0">
         {pages.map((page: IPage) => (
-          <CustomListItem key={page.id}>{page.name}</CustomListItem>
+          <CustomListItem key={page.id} onClick={() => clickPage(page.id)}>
+            {page.name}
+          </CustomListItem>
         ))}
       </UnorderedList>
       <Spacer />
