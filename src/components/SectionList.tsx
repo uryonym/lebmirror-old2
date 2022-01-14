@@ -8,7 +8,8 @@ import NewSectionModal from './NewSectionModal'
 
 const SectionList = () => {
   const [sections, setSections] = useState<ISection[]>([])
-  const { noteId } = useNote()
+  const { noteId, setSectionId } = useNote()
+
   useEffect(() => {
     const f = async () => {
       if (noteId) {
@@ -21,11 +22,21 @@ const SectionList = () => {
       f().catch((e) => console.log(e))
     }
   }, [noteId])
+
+  const clickSection = (sectionId: string | undefined) => {
+    setSectionId(sectionId)
+  }
+
   return (
     <Flex border="1px solid #333" w="170px" direction="column" padding="10px">
       <UnorderedList listStyleType="none" margin="0">
         {sections.map((section: ISection) => (
-          <CustomListItem key={section.id}>{section.name}</CustomListItem>
+          <CustomListItem
+            key={section.id}
+            onClick={() => clickSection(section.id)}
+          >
+            {section.name}
+          </CustomListItem>
         ))}
       </UnorderedList>
       <Spacer />
