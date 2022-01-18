@@ -15,9 +15,9 @@ const NoteContext = createContext<NoteContextProps>({
   noteId: undefined,
   sectionId: undefined,
   pageId: undefined,
-  setNoteId: (noteId: string | undefined) => {},
-  setSectionId: (sectionId: string | undefined) => {},
-  setPageId: (pageId: string | undefined) => {},
+  setNoteId: () => {},
+  setSectionId: () => {},
+  setPageId: () => {},
 })
 
 export const useNote = () => useContext(NoteContext)

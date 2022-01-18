@@ -1,14 +1,4 @@
-import {
-  Button,
-  Editable,
-  EditableInput,
-  EditablePreview,
-  Flex,
-  Heading,
-  Select,
-  Spacer,
-  Text,
-} from '@chakra-ui/react'
+import { Button, Flex, Heading, Select, Spacer, Text } from '@chakra-ui/react'
 import { fbAuth } from 'firebaseConfig'
 import { INote, IUser } from 'models'
 import { signOut } from 'firebase/auth'
@@ -18,6 +8,7 @@ import { useNote } from 'contexts/noteContext'
 import SectionList from './SectionList'
 import PageList from './PageList'
 import NewNoteModal from './NewNoteModal'
+import Editor from './Editor'
 
 const user1: IUser = {
   displayName: 'yoneyama ryo',
@@ -81,13 +72,7 @@ const Home = () => {
           direction="column"
           padding="10px"
         >
-          <Heading as="h3" marginBottom="10px">
-            タイトル
-          </Heading>
-          <Editable flex="1" defaultValue="テキストテスト">
-            <EditablePreview />
-            <EditableInput />
-          </Editable>
+          <Editor />
         </Flex>
       </Flex>
     </>
