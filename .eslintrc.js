@@ -52,6 +52,7 @@ module.exports = {
       },
     ],
     'react/jsx-props-no-spreading': 'off',
+    'no-console': 'off',
   },
   settings: {
     'import/resolver': {
