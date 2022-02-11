@@ -1,11 +1,14 @@
 import {
   collection,
+  doc,
   getDocs,
   QuerySnapshot,
   Timestamp,
   addDoc,
   where,
   query,
+  updateDoc,
+  getDoc,
 } from 'firebase/firestore'
 import { fbDb } from 'firebaseConfig'
 import { INote, IPage, ISection } from 'models'
@@ -77,4 +80,14 @@ export const addPage = async (page: IPage) => {
     createdAt: Timestamp.now(),
   }
   await addDoc(collection(fbDb, 'pages'), data)
+}
+
+export const getPageContent = async (pageId: string) => {
+  const snapShot = await getDoc(doc(fbDb, 'pages', pageId))
+  return snapShot.get('content') as string
+}
+
+export const updatePageContent = async (pageId: string, content: string) => {
+  const docRef = doc(fbDb, 'pages', pageId)
+  await updateDoc(docRef, { content })
 }

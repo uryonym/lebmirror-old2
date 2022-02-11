@@ -1,5 +1,5 @@
 import { Flex, Spacer, UnorderedList } from '@chakra-ui/react'
-import { getPages } from 'api/notesApi'
+import { getPageContent, getPages } from 'api/notesApi'
 import { useNote } from 'contexts/noteContext'
 import { IPage } from 'models'
 import { useEffect, useState } from 'react'
@@ -8,7 +8,7 @@ import NewPageModal from './NewPageModal'
 
 const PageList = () => {
   const [pages, setPages] = useState<IPage[]>([])
-  const { sectionId, setPageId } = useNote()
+  const { sectionId, setPageId, setContent } = useNote()
 
   useEffect(() => {
     if (sectionId) {
@@ -21,8 +21,12 @@ const PageList = () => {
     }
   }, [sectionId])
 
-  const clickPage = (pageId: string | undefined) => {
+  const clickPage = async (pageId: string | undefined) => {
     setPageId(pageId)
+    if (pageId) {
+      const content = await getPageContent(pageId)
+      setContent(content)
+    }
   }
 
   return (
