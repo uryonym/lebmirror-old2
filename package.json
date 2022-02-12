@@ -16,6 +16,7 @@
     "firebase": "^9.6.1",
     "framer-motion": "^5",
     "prosemirror-example-setup": "^1.1.2",
+    "prosemirror-markdown": "^1.7.0",
     "prosemirror-model": "^1.16.1",
     "prosemirror-schema-basic": "^1.1.2",
     "prosemirror-schema-list": "^1.1.6",
@@ -52,6 +53,7 @@
     ]
   },
   "devDependencies": {
+    "@types/prosemirror-markdown": "^1.5.5",
     "@types/prosemirror-model": "^1.16.0",
     "@types/prosemirror-schema-basic": "^1.0.2",
     "@types/prosemirror-schema-list": "^1.0.3",
