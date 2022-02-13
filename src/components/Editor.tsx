@@ -3,6 +3,7 @@ import { useNote } from 'contexts/noteContext'
 import { EditorState } from 'prosemirror-state'
 import { EditorView } from 'prosemirror-view'
 import { schema } from 'prosemirror-schema-basic'
+import { defaultMarkdownParser } from 'prosemirror-markdown'
 
 const Editor = () => {
   const { content } = useNote()
@@ -10,9 +11,17 @@ const Editor = () => {
   const pmEditor = useRef<HTMLDivElement>(null)
   const eView = useRef<EditorView | null>(null)
 
+  const createEditorState = (bodyContent?: string): EditorState => {
+    const doc = defaultMarkdownParser.parse(bodyContent || '')
+    return EditorState.create({
+      schema,
+      doc,
+    })
+  }
+
   const createEditorView = (ele: HTMLDivElement | null) => {
     if (ele) {
-      const state = EditorState.create({ schema })
+      const state = createEditorState()
       eView.current = new EditorView(ele, { state })
     }
   }
@@ -25,7 +34,7 @@ const Editor = () => {
   useEffect(() => {
     if (content) {
       if (pmEditor.current) {
-        const state = EditorState.create({ schema })
+        const state = createEditorState(content)
         eView.current = new EditorView(pmEditor.current, { state })
       }
     }
