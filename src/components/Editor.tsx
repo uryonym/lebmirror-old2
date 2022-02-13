@@ -2,8 +2,9 @@ import { useEffect, useRef } from 'react'
 import { useNote } from 'contexts/noteContext'
 import { EditorState } from 'prosemirror-state'
 import { EditorView } from 'prosemirror-view'
-import { schema } from 'prosemirror-schema-basic'
 import { defaultMarkdownParser } from 'prosemirror-markdown'
+import pmPlugins from 'lib/pmPlugins'
+import schema from 'lib/pmSchema'
 
 const Editor = () => {
   const { content } = useNote()
@@ -13,9 +14,11 @@ const Editor = () => {
 
   const createEditorState = (bodyContent?: string): EditorState => {
     const doc = defaultMarkdownParser.parse(bodyContent || '')
+    const plugins = pmPlugins()
     return EditorState.create({
       schema,
       doc,
+      plugins,
     })
   }
 

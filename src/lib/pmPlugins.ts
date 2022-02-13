@@ -7,11 +7,14 @@ import { history } from 'prosemirror-history'
 import { keymap } from 'prosemirror-keymap'
 import { Plugin } from 'prosemirror-state'
 import pmKeymaps from './pmKeymaps'
+import pmInputRules from './pmInputRules'
+import schema from './pmSchema'
 
 const pmPlugins = (): Plugin[] => [
   history(),
   keymap(pmKeymaps()),
   keymap(baseKeymap),
+  pmInputRules(schema),
   dropCursor(),
   gapCursor(),
 ]

@@ -11,7 +11,7 @@ import {
 import { redo, undo } from 'prosemirror-history'
 import { undoInputRule } from 'prosemirror-inputrules'
 import { splitListItem } from 'prosemirror-schema-list'
-import { schema } from 'prosemirror-schema-basic'
+import schema from './pmSchema'
 
 const pmKeymaps = (): Keymap => {
   const keys: Keymap = {}
