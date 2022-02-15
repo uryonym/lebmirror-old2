@@ -3,8 +3,10 @@ import { useNote } from 'contexts/noteContext'
 import { EditorState } from 'prosemirror-state'
 import { EditorView } from 'prosemirror-view'
 import { defaultMarkdownParser } from 'prosemirror-markdown'
+import applyDevTools from 'prosemirror-dev-tools'
 import pmPlugins from 'lib/pmPlugins'
 import schema from 'lib/pmSchema'
+import { Button } from '@chakra-ui/react'
 
 const Editor = () => {
   const { content } = useNote()
@@ -25,28 +27,41 @@ const Editor = () => {
   const createEditorView = (ele: HTMLDivElement | null) => {
     if (ele) {
       const state = createEditorState()
-      eView.current = new EditorView(ele, { state })
+      eView.current = new EditorView(ele, {
+        state,
+        dispatchTransaction(transaction) {
+          if (eView.current) {
+            const newState = eView.current.state.apply(transaction)
+            eView.current.updateState(newState)
+          }
+        },
+      })
     }
   }
 
   useEffect(() => {
     createEditorView(pmEditor.current)
+    if (eView.current) {
+      applyDevTools(eView.current)
+    }
     return () => eView.current?.destroy()
-  })
+  }, [])
 
   useEffect(() => {
     if (content) {
-      if (pmEditor.current) {
-        const state = createEditorState(content)
-        eView.current = new EditorView(pmEditor.current, { state })
+      const state = createEditorState(content)
+      if (eView.current) {
+        eView.current.updateState(state)
       }
     }
-    return () => eView.current?.destroy()
   }, [content])
 
   return (
     <div>
-      {content ? <div ref={pmEditor} /> : <p>ページを選択してください。</p>}
+      <Button colorScheme="green" mb={2}>
+        保存
+      </Button>
+      <div ref={pmEditor} />
     </div>
   )
 }

@@ -53,6 +53,7 @@ module.exports = {
     ],
     'react/jsx-props-no-spreading': 'off',
     'no-console': 'off',
+    'react-hooks/exhaustive-deps': 'off',
   },
   settings: {
     'import/resolver': {
