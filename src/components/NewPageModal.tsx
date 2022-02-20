@@ -1,26 +1,12 @@
-import {
-  Button,
-  Modal,
-  ModalOverlay,
-  ModalContent,
-  ModalHeader,
-  ModalCloseButton,
-  ModalBody,
-  ModalFooter,
-  FormControl,
-  Input,
-  useDisclosure,
-  Text,
-} from '@chakra-ui/react'
 import { addPage } from 'api/notesApi'
 import { useNote } from 'contexts/noteContext'
 import { IPage } from 'models'
-import { ChangeEvent, useRef, useState } from 'react'
+import { ChangeEvent, useState } from 'react'
+import { useModal } from 'react-hooks-use-modal'
 
 const NewPageModal = () => {
   const [pageName, setPageName] = useState<string>('')
-  const { isOpen, onOpen, onClose } = useDisclosure()
-  const initialRef = useRef<HTMLInputElement>(null)
+  const [Modal, open, close] = useModal('root')
   const { sectionId } = useNote()
   const isEmptySection: boolean = sectionId === undefined
 
@@ -29,7 +15,7 @@ const NewPageModal = () => {
   }
 
   const clickCreatePage = async () => {
-    onClose()
+    close()
     const data: IPage = {
       name: pageName,
       content: '',
@@ -44,38 +30,21 @@ const NewPageModal = () => {
 
   return (
     <>
-      <Button colorScheme="blue" onClick={onOpen}>
+      <button type="button" onClick={open}>
         ページ作成
-      </Button>
-      <Modal initialFocusRef={initialRef} isOpen={isOpen} onClose={onClose}>
-        <ModalOverlay />
-        <ModalContent>
-          <ModalHeader>新規ページの作成</ModalHeader>
-          <ModalCloseButton />
-          <ModalBody>
-            {isEmptySection ? (
-              <Text>セクションを選択してください。</Text>
-            ) : (
-              <FormControl>
-                <Input
-                  ref={initialRef}
-                  placeholder="ページ名を入力"
-                  value={pageName}
-                  onChange={handleChange}
-                />
-              </FormControl>
-            )}
-          </ModalBody>
-          <ModalFooter>
-            <Button
-              colorScheme="blue"
-              onClick={clickCreatePage}
-              isDisabled={isEmptySection}
-            >
-              作成
-            </Button>
-          </ModalFooter>
-        </ModalContent>
+      </button>
+      <Modal>
+        <div className="basic-modal">
+          <h2>新規ページの作成</h2>
+          {isEmptySection ? (
+            <p>セクションを選択してください。</p>
+          ) : (
+            <input type="text" placeholder="ページ名を入力" value={pageName} onChange={handleChange} />
+          )}
+          <button type="button" onClick={clickCreatePage} disabled={isEmptySection}>
+            作成
+          </button>
+        </div>
       </Modal>
     </>
   )

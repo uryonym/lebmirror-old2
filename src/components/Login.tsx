@@ -1,4 +1,3 @@
-import { Button, Heading, VStack } from '@chakra-ui/react'
 import {
   GoogleAuthProvider,
   signInWithRedirect,
@@ -19,12 +18,12 @@ const Login = () => {
   }
 
   return (
-    <VStack>
-      <Heading>lebmirror</Heading>
-      <Button colorScheme="blue" size="sm" onClick={clickSignIn}>
+    <div className="login">
+      <h2>lebmirror</h2>
+      <button type="button" onClick={clickSignIn}>
         サインイン
-      </Button>
-    </VStack>
+      </button>
+    </div>
   )
 }
 

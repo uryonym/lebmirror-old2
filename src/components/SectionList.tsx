@@ -1,9 +1,7 @@
-import { Flex, Spacer, UnorderedList } from '@chakra-ui/react'
 import { getSections } from 'api/notesApi'
 import { useNote } from 'contexts/noteContext'
 import { ISection } from 'models'
 import { useEffect, useState } from 'react'
-import CustomListItem from './CustomListItem'
 import NewSectionModal from './NewSectionModal'
 
 const SectionList = () => {
@@ -26,20 +24,17 @@ const SectionList = () => {
   }
 
   return (
-    <Flex border="1px solid #333" w="170px" direction="column" padding="10px">
-      <UnorderedList listStyleType="none" margin="0">
+    <div className="section-list">
+      <ul className="item-list">
         {sections.map((section: ISection) => (
-          <CustomListItem
-            key={section.id}
-            onClick={() => clickSection(section.id)}
-          >
+          <li key={section.id} onClick={() => clickSection(section.id)}>
             {section.name}
-          </CustomListItem>
+          </li>
         ))}
-      </UnorderedList>
-      <Spacer />
+      </ul>
+      <div className="flex-spacer" />
       <NewSectionModal />
-    </Flex>
+    </div>
   )
 }
 

@@ -1,26 +1,12 @@
-import {
-  Button,
-  Text,
-  Modal,
-  ModalOverlay,
-  ModalContent,
-  ModalHeader,
-  ModalCloseButton,
-  ModalBody,
-  ModalFooter,
-  FormControl,
-  Input,
-  useDisclosure,
-} from '@chakra-ui/react'
 import { addSection } from 'api/notesApi'
 import { useNote } from 'contexts/noteContext'
 import { ISection } from 'models'
-import { ChangeEvent, useRef, useState } from 'react'
+import { ChangeEvent, useState } from 'react'
+import { useModal } from 'react-hooks-use-modal'
 
 const NewSectionModal = () => {
   const [sectionName, setSectionName] = useState<string>('')
-  const { isOpen, onOpen, onClose } = useDisclosure()
-  const initialRef = useRef<HTMLInputElement>(null)
+  const [Modal, open, close] = useModal('root')
   const { noteId } = useNote()
   const isEmptyNote: boolean = noteId === undefined
 
@@ -29,7 +15,7 @@ const NewSectionModal = () => {
   }
 
   const clickCreateSection = async () => {
-    onClose()
+    close()
     const data: ISection = {
       name: sectionName,
       noteId: noteId!,
@@ -43,38 +29,21 @@ const NewSectionModal = () => {
 
   return (
     <>
-      <Button colorScheme="blue" onClick={onOpen}>
+      <button type="button" onClick={open}>
         セクション作成
-      </Button>
-      <Modal initialFocusRef={initialRef} isOpen={isOpen} onClose={onClose}>
-        <ModalOverlay />
-        <ModalContent>
-          <ModalHeader>新規セクションの作成</ModalHeader>
-          <ModalCloseButton />
-          <ModalBody>
-            {isEmptyNote ? (
-              <Text>ノートを選択してください。</Text>
-            ) : (
-              <FormControl>
-                <Input
-                  ref={initialRef}
-                  placeholder="セクション名を入力"
-                  value={sectionName}
-                  onChange={handleChange}
-                />
-              </FormControl>
-            )}
-          </ModalBody>
-          <ModalFooter>
-            <Button
-              colorScheme="blue"
-              onClick={clickCreateSection}
-              isDisabled={isEmptyNote}
-            >
-              作成
-            </Button>
-          </ModalFooter>
-        </ModalContent>
+      </button>
+      <Modal>
+        <div className="basic-modal">
+          <h2>新規セクションの作成</h2>
+          {isEmptyNote ? (
+            <p>ノートを選択してください。</p>
+          ) : (
+            <input type="text" placeholder="セクション名を入力" value={sectionName} onChange={handleChange} />
+          )}
+          <button type="button" onClick={clickCreateSection} disabled={isEmptyNote}>
+            作成
+          </button>
+        </div>
       </Modal>
     </>
   )

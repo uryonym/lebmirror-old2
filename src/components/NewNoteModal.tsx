@@ -1,33 +1,20 @@
-import {
-  Button,
-  Modal,
-  ModalOverlay,
-  ModalContent,
-  ModalHeader,
-  ModalCloseButton,
-  ModalBody,
-  ModalFooter,
-  FormControl,
-  Input,
-  useDisclosure,
-} from '@chakra-ui/react'
+import { useModal } from 'react-hooks-use-modal'
 import { addNote } from 'api/notesApi'
 import { useAuth } from 'contexts/authContext'
 import { INote } from 'models'
-import { ChangeEvent, useRef, useState } from 'react'
+import { ChangeEvent, useState } from 'react'
 
 const NewNoteModal = () => {
-  const [noteName, setNoteName] = useState<string>('')
   const { user } = useAuth()
-  const { isOpen, onOpen, onClose } = useDisclosure()
-  const initialRef = useRef<HTMLInputElement>(null)
+  const [noteName, setNoteName] = useState<string>('')
+  const [Modal, open, close] = useModal('root')
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     setNoteName(e.target.value)
   }
 
   const clickCreateNote = async () => {
-    onClose()
+    close()
     const data: INote = {
       name: noteName,
       uid: user?.uid ?? '',
@@ -41,30 +28,17 @@ const NewNoteModal = () => {
 
   return (
     <>
-      <Button colorScheme="blue" onClick={onOpen}>
+      <button type="button" onClick={open}>
         ノート作成
-      </Button>
-      <Modal initialFocusRef={initialRef} isOpen={isOpen} onClose={onClose}>
-        <ModalOverlay />
-        <ModalContent>
-          <ModalHeader>新規ノートの作成</ModalHeader>
-          <ModalCloseButton />
-          <ModalBody>
-            <FormControl>
-              <Input
-                ref={initialRef}
-                placeholder="ノート名を入力"
-                value={noteName}
-                onChange={handleChange}
-              />
-            </FormControl>
-          </ModalBody>
-          <ModalFooter>
-            <Button colorScheme="blue" onClick={clickCreateNote}>
-              作成
-            </Button>
-          </ModalFooter>
-        </ModalContent>
+      </button>
+      <Modal>
+        <div className="basic-modal">
+          <h2>新規ノートの作成</h2>
+          <input type="text" placeholder="ノート名を入力" value={noteName} onChange={handleChange} />
+          <button type="button" onClick={clickCreateNote}>
+            作成
+          </button>
+        </div>
       </Modal>
     </>
   )

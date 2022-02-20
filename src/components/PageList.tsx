@@ -1,9 +1,7 @@
-import { Flex, Spacer, UnorderedList } from '@chakra-ui/react'
 import { getPageContent, getPages } from 'api/notesApi'
 import { useNote } from 'contexts/noteContext'
 import { IPage } from 'models'
 import { useEffect, useState } from 'react'
-import CustomListItem from './CustomListItem'
 import NewPageModal from './NewPageModal'
 
 const PageList = () => {
@@ -30,17 +28,17 @@ const PageList = () => {
   }
 
   return (
-    <Flex border="1px solid #333" w="170px" direction="column" padding="10px">
-      <UnorderedList listStyleType="none" margin="0">
+    <div className="page-list">
+      <ul className="item-list">
         {pages.map((page: IPage) => (
-          <CustomListItem key={page.id} onClick={() => clickPage(page.id)}>
+          <li key={page.id} onClick={() => clickPage(page.id)}>
             {page.name}
-          </CustomListItem>
+          </li>
         ))}
-      </UnorderedList>
-      <Spacer />
+      </ul>
+      <div className="flex-spacer" />
       <NewPageModal />
-    </Flex>
+    </div>
   )
 }
 

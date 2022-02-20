@@ -2,14 +2,10 @@ import { useEffect, useRef } from 'react'
 import { useNote } from 'contexts/noteContext'
 import { EditorState } from 'prosemirror-state'
 import { EditorView } from 'prosemirror-view'
-import {
-  defaultMarkdownParser,
-  defaultMarkdownSerializer,
-} from 'prosemirror-markdown'
+import { defaultMarkdownParser, defaultMarkdownSerializer } from 'prosemirror-markdown'
 import applyDevTools from 'prosemirror-dev-tools'
 import pmPlugins from 'lib/pmPlugins'
 import schema from 'lib/pmSchema'
-import { Button } from '@chakra-ui/react'
 import { updatePageContent } from 'api/notesApi'
 
 const Editor = () => {
@@ -62,10 +58,7 @@ const Editor = () => {
 
   const clickSave = async () => {
     if (pageId && eView.current) {
-      await updatePageContent(
-        pageId,
-        defaultMarkdownSerializer.serialize(eView.current.state.doc)
-      )
+      await updatePageContent(pageId, defaultMarkdownSerializer.serialize(eView.current.state.doc))
     }
   }
 
@@ -76,14 +69,18 @@ const Editor = () => {
   }
 
   return (
-    <div>
-      <Button colorScheme="green" mb={2} onClick={clickSave}>
-        保存
-      </Button>
-      <Button colorScheme="yellow" mb={2} ms={2} onClick={clickOutputMarkdown}>
-        Markdown出力
-      </Button>
-      <div ref={pmEditor} />
+    <div className="editor">
+      <div>
+        <button type="button" onClick={clickSave}>
+          保存
+        </button>
+        <button type="button" onClick={clickOutputMarkdown}>
+          Markdown出力
+        </button>
+      </div>
+      <div className="editor-content">
+        <div ref={pmEditor} />
+      </div>
     </div>
   )
 }

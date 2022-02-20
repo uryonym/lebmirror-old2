@@ -1,5 +1,4 @@
 import { StrictMode } from 'react'
-import { ChakraProvider } from '@chakra-ui/react'
 import ReactDOM from 'react-dom'
 import './index.scss'
 import { NoteProvider } from 'contexts/noteContext'
@@ -11,9 +10,7 @@ ReactDOM.render(
   <StrictMode>
     <AuthProvider>
       <NoteProvider>
-        <ChakraProvider>
-          <App />
-        </ChakraProvider>
+        <App />
       </NoteProvider>
     </AuthProvider>
   </StrictMode>,
