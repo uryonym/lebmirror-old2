@@ -25,14 +25,15 @@ const SectionList = () => {
 
   return (
     <div className="section-list">
-      <ul className="item-list">
-        {sections.map((section: ISection) => (
-          <li key={section.id} onClick={() => clickSection(section.id)}>
-            {section.name}
-          </li>
-        ))}
-      </ul>
-      <div className="flex-spacer" />
+      <div className="section-list-item">
+        <ul className="item-list">
+          {sections.map((section: ISection) => (
+            <li key={section.id} onClick={() => clickSection(section.id)}>
+              {section.name}
+            </li>
+          ))}
+        </ul>
+      </div>
       <NewSectionModal />
     </div>
   )

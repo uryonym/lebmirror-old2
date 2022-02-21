@@ -29,14 +29,15 @@ const PageList = () => {
 
   return (
     <div className="page-list">
-      <ul className="item-list">
-        {pages.map((page: IPage) => (
-          <li key={page.id} onClick={() => clickPage(page.id)}>
-            {page.name}
-          </li>
-        ))}
-      </ul>
-      <div className="flex-spacer" />
+      <div className="page-list-item">
+        <ul className="item-list">
+          {pages.map((page: IPage) => (
+            <li key={page.id} onClick={() => clickPage(page.id)}>
+              {page.name}
+            </li>
+          ))}
+        </ul>
+      </div>
       <NewPageModal />
     </div>
   )

@@ -48,17 +48,17 @@ button {
   align-self: stretch;
 }
 
-.main {
-  display: flex;
-  height: calc(100vh - 45px);
-}
-
 .section-list,
 .page-list {
   display: flex;
   flex-direction: column;
-  border-right: 1px solid #333;
-  width: 200px;
+  height: calc(100vh - 45px);
+}
+
+.section-list-item,
+.page-list-item {
+  flex: 1;
+  overflow-y: auto;
 }
 
 .item-list {
@@ -73,6 +73,15 @@ button {
     &:hover {
       background: #ccc;
     }
+  }
+}
+
+.new-section,
+.new-page {
+  width: 100%;
+
+  button {
+    width: 100%;
   }
 }
 

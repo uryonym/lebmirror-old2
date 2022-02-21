@@ -29,7 +29,7 @@ const NewPageModal = () => {
   }
 
   return (
-    <>
+    <div className="new-page">
       <button type="button" onClick={open}>
         ページ作成
       </button>
@@ -46,7 +46,7 @@ const NewPageModal = () => {
           </button>
         </div>
       </Modal>
-    </>
+    </div>
   )
 }
 

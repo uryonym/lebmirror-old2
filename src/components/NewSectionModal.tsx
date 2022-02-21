@@ -28,7 +28,7 @@ const NewSectionModal = () => {
   }
 
   return (
-    <>
+    <div className="new-section">
       <button type="button" onClick={open}>
         セクション作成
       </button>
@@ -45,7 +45,7 @@ const NewSectionModal = () => {
           </button>
         </div>
       </Modal>
-    </>
+    </div>
   )
 }
 
