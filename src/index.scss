@@ -1,4 +1,15 @@
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;500&display=swap');
+@import '../node_modules/react-reflex/styles.css';
+
+*,
+*:before,
+*:after {
+  box-sizing: inherit;
+}
+
+html {
+  box-sizing: border-box;
+}
 
 body {
   margin: 0;
@@ -25,34 +36,30 @@ button {
   flex-direction: column;
   height: 100vh;
   width: 100vw;
+  overflow: hidden;
 }
+
+$header-height: 45px;
+$border-color: #ccc;
 
 .header {
   display: flex;
   column-gap: 8px;
-  border: 1px solid #333;
+  border: 1px solid $border-color;
   align-items: center;
   padding: 0 8px;
-  height: 45px;
+  height: $header-height;
 }
 
-.basic-modal {
-  background-color: #fff;
-  padding: 15px 25px;
-  border-radius: 10px;
-}
-
-.flex-spacer {
-  flex: 1;
-  justify-self: stretch;
-  align-self: stretch;
+.main {
+  height: calc(100vh - $header-height);
 }
 
 .section-list,
 .page-list {
   display: flex;
   flex-direction: column;
-  height: calc(100vh - 45px);
+  height: 100%;
 }
 
 .section-list-item,
@@ -68,7 +75,7 @@ button {
 
   li {
     padding: 10px;
-    border-bottom: 1px solid #666;
+    border-bottom: 1px solid $border-color;
 
     &:hover {
       background: #ccc;
@@ -88,13 +95,23 @@ button {
 .editor {
   display: flex;
   flex-direction: column;
+  height: 100%;
+  width: 100%;
+
+  .editor-control {
+    padding: 8px;
+    border-bottom: 1px solid $border-color;
+  }
 
   .editor-content {
     flex: 1;
-  }
+    height: 100%;
+    overflow: auto;
+    padding: 8px;
 
-  [contenteditable] {
-    outline: 0px solid transparent;
+    [contenteditable] {
+      outline: 0px solid transparent;
+    }
   }
 
   .ProseMirror {
@@ -111,4 +128,21 @@ button {
       font-weight: bold;
     }
   }
+}
+
+.reflex-border {
+  border-right: 1px solid $border-color !important;
+  border-left: 1px solid $border-color !important;
+}
+
+.basic-modal {
+  background-color: #fff;
+  padding: 15px 25px;
+  border-radius: 10px;
+}
+
+.flex-spacer {
+  flex: 1;
+  justify-self: stretch;
+  align-self: stretch;
 }

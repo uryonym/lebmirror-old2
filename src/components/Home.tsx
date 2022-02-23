@@ -1,23 +1,28 @@
-import { Allotment } from 'allotment'
-import useWindowDimensions from 'lib/useWindowDimensions'
+import { ReflexContainer, ReflexElement, ReflexSplitter } from 'react-reflex'
 import SectionList from './SectionList'
 import PageList from './PageList'
 import Editor from './Editor'
 import Header from './Header'
 
-const Home = () => {
-  const { width, height } = useWindowDimensions()
-
-  return (
-    <div className="app-wrapper">
-      <Header />
-      <Allotment defaultSizes={[200, 200, width - 400]} minSize={150}>
-        <SectionList />
-        <PageList />
-        <Editor />
-      </Allotment>
+const Home = () => (
+  <div className="app-wrapper">
+    <Header />
+    <div className="main">
+      <ReflexContainer orientation="vertical" windowResizeAware>
+        <ReflexElement minSize={120} maxSize={250}>
+          <SectionList />
+        </ReflexElement>
+        <ReflexSplitter className="reflex-border" />
+        <ReflexElement minSize={120} maxSize={250}>
+          <PageList />
+        </ReflexElement>
+        <ReflexSplitter propagate className="reflex-border" />
+        <ReflexElement>
+          <Editor />
+        </ReflexElement>
+      </ReflexContainer>
     </div>
-  )
-}
+  </div>
+)
 
 export default Home

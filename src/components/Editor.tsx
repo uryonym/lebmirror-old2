@@ -70,7 +70,7 @@ const Editor = () => {
 
   return (
     <div className="editor">
-      <div>
+      <div className="editor-control">
         <button type="button" onClick={clickSave}>
           保存
         </button>
@@ -78,9 +78,7 @@ const Editor = () => {
           Markdown出力
         </button>
       </div>
-      <div className="editor-content">
-        <div ref={pmEditor} />
-      </div>
+      <div className="editor-content" ref={pmEditor} />
     </div>
   )
 }

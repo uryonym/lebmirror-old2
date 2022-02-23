@@ -1,9 +1,8 @@
 import { StrictMode } from 'react'
 import ReactDOM from 'react-dom'
 import './index.scss'
-import 'allotment/dist/style.css'
 import { NoteProvider } from 'contexts/noteContext'
-import App from './App'
+import App from './components/App'
 import reportWebVitals from './reportWebVitals'
 import { AuthProvider } from './contexts/authContext'
 
