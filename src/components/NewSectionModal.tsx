@@ -1,3 +1,4 @@
+import { Box, Button, Stack, TextField, Typography } from '@mui/material'
 import { addSection } from 'api/notesApi'
 import { useNote } from 'contexts/noteContext'
 import { ISection } from 'models'
@@ -29,21 +30,21 @@ const NewSectionModal = () => {
 
   return (
     <div className="new-section">
-      <button type="button" onClick={open}>
-        セクション作成
-      </button>
+      <Button onClick={open}>セクション作成</Button>
       <Modal>
-        <div className="basic-modal">
-          <h2>新規セクションの作成</h2>
+        <Box className="basic-modal">
+          <Typography variant="h3">新規セクションの作成</Typography>
           {isEmptyNote ? (
             <p>ノートを選択してください。</p>
           ) : (
-            <input type="text" placeholder="セクション名を入力" value={sectionName} onChange={handleChange} />
+            <div>
+              <TextField variant="standard" type="text" placeholder="セクション名を入力" value={sectionName} onChange={handleChange} />
+            </div>
           )}
-          <button type="button" onClick={clickCreateSection} disabled={isEmptyNote}>
+          <Button variant="contained" onClick={clickCreateSection} disabled={isEmptyNote}>
             作成
-          </button>
-        </div>
+          </Button>
+        </Box>
       </Modal>
     </div>
   )

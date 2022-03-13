@@ -1,3 +1,4 @@
+import { Button } from '@mui/material'
 import { addPage } from 'api/notesApi'
 import { useNote } from 'contexts/noteContext'
 import { IPage } from 'models'
@@ -30,9 +31,7 @@ const NewPageModal = () => {
 
   return (
     <div className="new-page">
-      <button type="button" onClick={open}>
-        ページ作成
-      </button>
+      <Button onClick={open}>ページ作成</Button>
       <Modal>
         <div className="basic-modal">
           <h2>新規ページの作成</h2>
@@ -41,9 +40,9 @@ const NewPageModal = () => {
           ) : (
             <input type="text" placeholder="ページ名を入力" value={pageName} onChange={handleChange} />
           )}
-          <button type="button" onClick={clickCreatePage} disabled={isEmptySection}>
+          <Button variant="contained" onClick={clickCreatePage} disabled={isEmptySection}>
             作成
-          </button>
+          </Button>
         </div>
       </Modal>
     </div>
