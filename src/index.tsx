@@ -2,6 +2,7 @@ import { StrictMode } from 'react'
 import ReactDOM from 'react-dom'
 import './index.scss'
 import { NoteProvider } from 'contexts/noteContext'
+import { CssBaseline } from '@mui/material'
 import App from './components/App'
 import reportWebVitals from './reportWebVitals'
 import { AuthProvider } from './contexts/authContext'
@@ -10,6 +11,7 @@ ReactDOM.render(
   <StrictMode>
     <AuthProvider>
       <NoteProvider>
+        <CssBaseline />
         <App />
       </NoteProvider>
     </AuthProvider>
