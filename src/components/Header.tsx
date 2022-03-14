@@ -5,6 +5,7 @@ import { ChangeEvent, useState } from 'react'
 import { getNotes } from 'api/notesApi'
 import { useNote } from 'contexts/noteContext'
 import { useAuth } from 'contexts/authContext'
+import { Button } from '@mui/material'
 import NewNoteModal from './NewNoteModal'
 
 const Header = () => {
@@ -28,9 +29,7 @@ const Header = () => {
   return (
     <div className="header">
       <h2>lebmirror</h2>
-      <button type="button" onClick={clickGetNotes}>
-        ノート一覧取得
-      </button>
+      <Button onClick={clickGetNotes}>ノート一覧取得</Button>
       <select onChange={handleChangeNote}>
         <option hidden>ノートを選択</option>
         {notes.map((note: INote) => (
@@ -42,9 +41,7 @@ const Header = () => {
       <NewNoteModal />
       <div className="flex-spacer" />
       <p>{user?.displayName}</p>
-      <button type="button" onClick={clickSignOut}>
-        サインアウト
-      </button>
+      <Button onClick={clickSignOut}>サインアウト</Button>
     </div>
   )
 }
