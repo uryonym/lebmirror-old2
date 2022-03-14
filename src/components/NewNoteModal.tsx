@@ -1,20 +1,28 @@
-import { useModal } from 'react-hooks-use-modal'
 import { addNote } from 'api/notesApi'
 import { useAuth } from 'contexts/authContext'
 import { INote } from 'models'
 import { ChangeEvent, useState } from 'react'
+import { Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField } from '@mui/material'
 
 const NewNoteModal = () => {
   const { user } = useAuth()
   const [noteName, setNoteName] = useState<string>('')
-  const [Modal, open, close] = useModal('root')
+  const [open, setOpen] = useState<boolean>(false)
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     setNoteName(e.target.value)
   }
 
+  const handleClickOpen = () => {
+    setOpen(true)
+  }
+
+  const handleClose = () => {
+    setOpen(false)
+  }
+
   const clickCreateNote = async () => {
-    close()
+    handleClose()
     const data: INote = {
       name: noteName,
       uid: user?.uid ?? '',
@@ -28,18 +36,24 @@ const NewNoteModal = () => {
 
   return (
     <>
-      <button type="button" onClick={open}>
-        ノート作成
-      </button>
-      <Modal>
-        <div className="basic-modal">
-          <h2>新規ノートの作成</h2>
-          <input type="text" placeholder="ノート名を入力" value={noteName} onChange={handleChange} />
-          <button type="button" onClick={clickCreateNote}>
-            作成
-          </button>
-        </div>
-      </Modal>
+      <Button onClick={handleClickOpen}>ノート作成</Button>
+      <Dialog open={open} onClose={handleClose}>
+        <DialogTitle>新規ノートの作成</DialogTitle>
+        <DialogContent>
+          <TextField
+            autoFocus
+            margin="dense"
+            variant="standard"
+            type="text"
+            placeholder="ノート名を入力"
+            value={noteName}
+            onChange={handleChange}
+          />
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={clickCreateNote}>作成</Button>
+        </DialogActions>
+      </Dialog>
     </>
   )
 }
