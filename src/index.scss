@@ -87,15 +87,6 @@ $border-color: #ccc;
   }
 }
 
-.new-section,
-.new-page {
-  width: 100%;
-
-  button {
-    width: 100%;
-  }
-}
-
 .editor {
   display: flex;
   flex-direction: column;
@@ -137,12 +128,6 @@ $border-color: #ccc;
 .reflex-border {
   border-right: 1px solid $border-color !important;
   border-left: 1px solid $border-color !important;
-}
-
-.basic-modal {
-  background-color: #fff;
-  padding: 15px 25px;
-  border-radius: 10px;
 }
 
 .flex-spacer {

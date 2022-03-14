@@ -1,13 +1,12 @@
-import { Button } from '@mui/material'
+import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, TextField } from '@mui/material'
 import { addPage } from 'api/notesApi'
 import { useNote } from 'contexts/noteContext'
 import { IPage } from 'models'
 import { ChangeEvent, useState } from 'react'
-import { useModal } from 'react-hooks-use-modal'
 
 const NewPageModal = () => {
   const [pageName, setPageName] = useState<string>('')
-  const [Modal, open, close] = useModal('root')
+  const [open, setOpen] = useState<boolean>(false)
   const { sectionId } = useNote()
   const isEmptySection: boolean = sectionId === undefined
 
@@ -15,8 +14,16 @@ const NewPageModal = () => {
     setPageName(e.target.value)
   }
 
+  const handleClickOpen = () => {
+    setOpen(true)
+  }
+
+  const handleClose = () => {
+    setOpen(false)
+  }
+
   const clickCreatePage = async () => {
-    close()
+    handleClose()
     const data: IPage = {
       name: pageName,
       content: '',
@@ -30,22 +37,34 @@ const NewPageModal = () => {
   }
 
   return (
-    <div className="new-page">
-      <Button onClick={open}>ページ作成</Button>
-      <Modal>
-        <div className="basic-modal">
-          <h2>新規ページの作成</h2>
+    <>
+      <Button fullWidth onClick={handleClickOpen}>
+        ページ作成
+      </Button>
+      <Dialog open={open} onClose={handleClose}>
+        <DialogTitle>新規ページの作成</DialogTitle>
+        <DialogContent>
           {isEmptySection ? (
-            <p>セクションを選択してください。</p>
+            <DialogContentText>セクションを選択してください。</DialogContentText>
           ) : (
-            <input type="text" placeholder="ページ名を入力" value={pageName} onChange={handleChange} />
+            <TextField
+              autoFocus
+              margin="dense"
+              variant="standard"
+              type="text"
+              placeholder="ページ名を入力"
+              value={pageName}
+              onChange={handleChange}
+            />
           )}
-          <Button variant="contained" onClick={clickCreatePage} disabled={isEmptySection}>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={clickCreatePage} disabled={isEmptySection}>
             作成
           </Button>
-        </div>
-      </Modal>
-    </div>
+        </DialogActions>
+      </Dialog>
+    </>
   )
 }
 
