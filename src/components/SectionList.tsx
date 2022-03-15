@@ -1,14 +1,10 @@
-import { Menu, MenuItem } from '@mui/material'
+import { Divider, List, ListItemButton, ListItemText, Menu, MenuItem } from '@mui/material'
 import { getSections } from 'api/notesApi'
 import { useNote } from 'contexts/noteContext'
+import { ContextState } from 'lib/constant'
 import { ISection } from 'models'
 import { useEffect, useState, MouseEvent } from 'react'
 import NewSectionModal from './NewSectionModal'
-
-interface ContextState {
-  mouseX: number
-  mouseY: number
-}
 
 const SectionList = () => {
   const [sections, setSections] = useState<ISection[]>([])
@@ -30,8 +26,7 @@ const SectionList = () => {
     setSectionId(sectionId)
   }
 
-  const handleContextMenu = (e: MouseEvent<HTMLLIElement>, sectionId: string | undefined) => {
-    console.log(sectionId)
+  const handleContextMenu = (e: MouseEvent<HTMLDivElement>, sectionId: string | undefined) => {
     setContextMenu(
       contextMenu === null
         ? {
@@ -49,13 +44,16 @@ const SectionList = () => {
   return (
     <div className="section-list">
       <div className="section-list-item">
-        <ul className="item-list">
+        <List>
           {sections.map((section: ISection) => (
-            <li key={section.id} onClick={() => clickSection(section.id)} onContextMenu={(e) => handleContextMenu(e, section.id)}>
-              {section.name}
-            </li>
+            <>
+              <ListItemButton onClick={() => clickSection(section.id)} onContextMenu={(e) => handleContextMenu(e, section.id)}>
+                <ListItemText primary={section.name} />
+              </ListItemButton>
+              <Divider component="li" />
+            </>
           ))}
-        </ul>
+        </List>
       </div>
       <Menu
         open={contextMenu !== null}
