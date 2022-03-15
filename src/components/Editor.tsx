@@ -7,6 +7,8 @@ import applyDevTools from 'prosemirror-dev-tools'
 import pmPlugins from 'lib/pmPlugins'
 import schema from 'lib/pmSchema'
 import { updatePageContent } from 'api/notesApi'
+import { Button, Stack } from '@mui/material'
+import { css } from '@emotion/react'
 
 const Editor = () => {
   const { pageId, content } = useNote()
@@ -68,16 +70,21 @@ const Editor = () => {
     }
   }
 
+  const controlStyle = css`
+    padding: 8px;
+    border-bottom: 1px solid #ccc;
+  `
+
   return (
     <div className="editor">
-      <div className="editor-control">
-        <button type="button" onClick={clickSave}>
+      <Stack css={controlStyle} spacing={2} direction="row">
+        <Button variant="contained" onClick={clickSave}>
           保存
-        </button>
-        <button type="button" onClick={clickOutputMarkdown}>
+        </Button>
+        <Button variant="contained" onClick={clickOutputMarkdown}>
           Markdown出力
-        </button>
-      </div>
+        </Button>
+      </Stack>
       <div className="editor-content" ref={pmEditor} />
     </div>
   )
