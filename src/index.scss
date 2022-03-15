@@ -5,19 +5,7 @@
 @import '../node_modules/@fontsource/roboto/700.css';
 @import '../node_modules/react-reflex/styles.css';
 
-*,
-*:before,
-*:after {
-  box-sizing: inherit;
-}
-
-html {
-  box-sizing: border-box;
-}
-
 body {
-  margin: 0;
-  font-family: 'Noto Sans JP', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }

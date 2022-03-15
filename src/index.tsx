@@ -2,7 +2,8 @@ import { StrictMode } from 'react'
 import ReactDOM from 'react-dom'
 import './index.scss'
 import { NoteProvider } from 'contexts/noteContext'
-import { CssBaseline } from '@mui/material'
+import { CssBaseline, ThemeProvider } from '@mui/material'
+import muiTheme from 'lib/muiTheme'
 import App from './components/App'
 import reportWebVitals from './reportWebVitals'
 import { AuthProvider } from './contexts/authContext'
@@ -11,8 +12,10 @@ ReactDOM.render(
   <StrictMode>
     <AuthProvider>
       <NoteProvider>
-        <CssBaseline />
-        <App />
+        <ThemeProvider theme={muiTheme}>
+          <CssBaseline />
+          <App />
+        </ThemeProvider>
       </NoteProvider>
     </AuthProvider>
   </StrictMode>,
