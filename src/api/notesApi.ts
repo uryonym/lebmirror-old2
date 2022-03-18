@@ -1,22 +1,9 @@
-import {
-  collection,
-  doc,
-  getDocs,
-  QuerySnapshot,
-  Timestamp,
-  addDoc,
-  where,
-  query,
-  updateDoc,
-  getDoc,
-} from 'firebase/firestore'
+import { collection, doc, getDocs, QuerySnapshot, Timestamp, addDoc, where, query, updateDoc, getDoc, deleteDoc } from 'firebase/firestore'
 import { fbDb } from 'firebaseConfig'
 import { INote, IPage, ISection } from 'models'
 
 export const getNotes = async () => {
-  const snapShot = (await getDocs(
-    collection(fbDb, 'notes')
-  )) as QuerySnapshot<INote>
+  const snapShot = (await getDocs(collection(fbDb, 'notes'))) as QuerySnapshot<INote>
   const data: INote[] = snapShot.docs.map((document) => ({
     name: document.data().name,
     uid: document.data().uid,
@@ -36,9 +23,7 @@ export const addNote = async (note: INote) => {
 }
 
 export const getSections = async (noteId: string) => {
-  const snapShot = (await getDocs(
-    query(collection(fbDb, 'sections'), where('noteId', '==', noteId))
-  )) as QuerySnapshot<ISection>
+  const snapShot = (await getDocs(query(collection(fbDb, 'sections'), where('noteId', '==', noteId)))) as QuerySnapshot<ISection>
   const data: ISection[] = snapShot.docs.map((document) => ({
     name: document.data().name,
     noteId: document.data().noteId,
@@ -57,10 +42,12 @@ export const addSection = async (section: ISection) => {
   await addDoc(collection(fbDb, 'sections'), data)
 }
 
+export const deleteSection = async (sectionId: string) => {
+  await deleteDoc(doc(fbDb, 'sections', sectionId))
+}
+
 export const getPages = async (sectionId: string) => {
-  const snapShot = (await getDocs(
-    query(collection(fbDb, 'pages'), where('sectionId', '==', sectionId))
-  )) as QuerySnapshot<IPage>
+  const snapShot = (await getDocs(query(collection(fbDb, 'pages'), where('sectionId', '==', sectionId)))) as QuerySnapshot<IPage>
 
   const data: IPage[] = snapShot.docs.map((document) => ({
     name: document.data().name,
@@ -80,6 +67,10 @@ export const addPage = async (page: IPage) => {
     createdAt: Timestamp.now(),
   }
   await addDoc(collection(fbDb, 'pages'), data)
+}
+
+export const deletePage = async (pageId: string) => {
+  await deleteDoc(doc(fbDb, 'pages', pageId))
 }
 
 export const getPageContent = async (pageId: string) => {

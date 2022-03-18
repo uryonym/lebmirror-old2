@@ -1,5 +1,5 @@
-import { Divider, List, ListItemButton, ListItemText, Menu, MenuItem } from '@mui/material'
-import { getPageContent, getPages } from 'api/notesApi'
+import { Divider, List, ListItem, ListItemButton, ListItemText, Menu, MenuItem } from '@mui/material'
+import { deletePage, getPageContent, getPages } from 'api/notesApi'
 import { useNote } from 'contexts/noteContext'
 import { ContextState } from 'lib/constant'
 import { IPage } from 'models'
@@ -36,9 +36,19 @@ const PageList = () => {
         ? {
             mouseX: e.clientX - 2,
             mouseY: e.clientY - 4,
+            value: pageId,
           }
         : null
     )
+  }
+
+  const handlePageDelete = async () => {
+    const pageId = contextMenu?.value
+    setContextMenu(null)
+    if (pageId) {
+      await deletePage(pageId)
+      setPages(pages.filter((s) => s.id !== pageId))
+    }
   }
 
   const handleClose = () => {
@@ -50,12 +60,11 @@ const PageList = () => {
       <div className="page-list-item">
         <List>
           {pages.map((page: IPage) => (
-            <>
-              <ListItemButton onClick={() => clickPage(page.id)} onContextMenu={(e) => handleContextMenu(e, page.id)}>
+            <ListItem key={page.id} divider disablePadding>
+              <ListItemButton key={page.id} onClick={() => clickPage(page.id)} onContextMenu={(e) => handleContextMenu(e, page.id)}>
                 <ListItemText primary={page.name} />
               </ListItemButton>
-              <Divider component="li" />
-            </>
+            </ListItem>
           ))}
         </List>
       </div>
@@ -66,7 +75,7 @@ const PageList = () => {
         anchorPosition={contextMenu !== null ? { top: contextMenu.mouseY, left: contextMenu.mouseX } : undefined}
       >
         <MenuItem onClick={handleClose}>名前変更</MenuItem>
-        <MenuItem onClick={handleClose}>削除</MenuItem>
+        <MenuItem onClick={handlePageDelete}>削除</MenuItem>
       </Menu>
       <NewPageModal />
     </div>
