@@ -1,14 +1,32 @@
-import { Divider, List, ListItem, ListItemButton, ListItemText, Menu, MenuItem } from '@mui/material'
-import { deleteSection, getSections } from 'api/notesApi'
+import {
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+  Divider,
+  List,
+  ListItem,
+  ListItemButton,
+  ListItemText,
+  Menu,
+  MenuItem,
+  TextField,
+} from '@mui/material'
+import { deleteSection, getSections, updateSection } from 'api/notesApi'
 import { useNote } from 'contexts/noteContext'
 import { ContextState } from 'lib/constant'
 import { ISection } from 'models'
-import { useEffect, useState, MouseEvent } from 'react'
+import { useEffect, useState, MouseEvent, ChangeEvent } from 'react'
 import NewSectionModal from './NewSectionModal'
 
 const SectionList = () => {
   const [sections, setSections] = useState<ISection[]>([])
   const [contextMenu, setContextMenu] = useState<ContextState | null>(null)
+  const [sectionName, setSectionName] = useState<string>('')
+  const [renameSectionId, setRenameSectionId] = useState<string>('')
+  const [open, setOpen] = useState<boolean>(false)
   const { noteId, setSectionId } = useNote()
 
   useEffect(() => {
@@ -22,7 +40,7 @@ const SectionList = () => {
     }
   }, [noteId])
 
-  const clickSection = (sectionId: string | undefined) => {
+  const handleClickSection = (sectionId: string | undefined) => {
     setSectionId(sectionId)
   }
 
@@ -38,17 +56,59 @@ const SectionList = () => {
     )
   }
 
-  const handleSectionDelete = async () => {
-    const sectionId = contextMenu?.value
+  const handleContextClose = () => {
     setContextMenu(null)
+  }
+
+  const handleDeleteSection = async () => {
+    const sectionId = contextMenu?.value
+    handleContextClose()
     if (sectionId) {
-      await deleteSection(sectionId)
+      await deleteSection(sectionId).catch((e) => {
+        console.log(e)
+      })
       setSections(sections.filter((s) => s.id !== sectionId))
     }
   }
 
-  const handleClose = () => {
-    setContextMenu(null)
+  const handleModalOpen = () => {
+    const sectionId = contextMenu?.value
+    handleContextClose()
+    setOpen(true)
+    if (sectionId) {
+      setRenameSectionId(sectionId)
+      const section = sections.find((x) => x.id === sectionId)
+      if (section) {
+        setSectionName(section.name)
+      }
+    }
+  }
+
+  const handleModalClose = () => {
+    setRenameSectionId('')
+    setOpen(false)
+  }
+
+  const handleChangeSectionName = (e: ChangeEvent<HTMLInputElement>) => {
+    setSectionName(e.target.value)
+  }
+
+  const handleRenameSection = async () => {
+    const data: ISection = {
+      name: sectionName,
+      noteId: noteId!,
+      createdAt: undefined,
+      id: renameSectionId,
+    }
+    await updateSection(data).catch((e) => {
+      console.log(e)
+    })
+    const section = sections.find((x) => x.id === renameSectionId)
+    if (section) {
+      section.name = sectionName
+      setSections(sections)
+    }
+    handleModalClose()
   }
 
   return (
@@ -57,7 +117,7 @@ const SectionList = () => {
         <List>
           {sections.map((section: ISection) => (
             <ListItem key={section.id} divider disablePadding>
-              <ListItemButton onClick={() => clickSection(section.id)} onContextMenu={(e) => handleContextMenu(e, section.id)}>
+              <ListItemButton onClick={() => handleClickSection(section.id)} onContextMenu={(e) => handleContextMenu(e, section.id)}>
                 <ListItemText primary={section.name} />
               </ListItemButton>
             </ListItem>
@@ -66,14 +126,31 @@ const SectionList = () => {
       </div>
       <Menu
         open={contextMenu !== null}
-        onClose={handleClose}
+        onClose={handleContextClose}
         anchorReference="anchorPosition"
         anchorPosition={contextMenu !== null ? { top: contextMenu.mouseY, left: contextMenu.mouseX } : undefined}
       >
-        <MenuItem onClick={handleClose}>名前変更</MenuItem>
-        <MenuItem onClick={handleSectionDelete}>削除</MenuItem>
+        <MenuItem onClick={handleModalOpen}>名前変更</MenuItem>
+        <MenuItem onClick={handleDeleteSection}>削除</MenuItem>
       </Menu>
       <NewSectionModal />
+      <Dialog open={open} onClose={handleModalClose}>
+        <DialogTitle>セクション名の変更</DialogTitle>
+        <DialogContent>
+          <TextField
+            autoFocus
+            margin="dense"
+            variant="standard"
+            type="text"
+            placeholder="セクション名を入力"
+            value={sectionName}
+            onChange={handleChangeSectionName}
+          />
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleRenameSection}>変更</Button>
+        </DialogActions>
+      </Dialog>
     </div>
   )
 }

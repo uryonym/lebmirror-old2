@@ -42,6 +42,12 @@ export const addSection = async (section: ISection) => {
   await addDoc(collection(fbDb, 'sections'), data)
 }
 
+export const updateSection = async (section: ISection) => {
+  if (section.id) {
+    await updateDoc(doc(fbDb, 'sections', section.id), { name: section.name })
+  }
+}
+
 export const deleteSection = async (sectionId: string) => {
   await deleteDoc(doc(fbDb, 'sections', sectionId))
 }
@@ -67,6 +73,12 @@ export const addPage = async (page: IPage) => {
     createdAt: Timestamp.now(),
   }
   await addDoc(collection(fbDb, 'pages'), data)
+}
+
+export const updatePage = async (page: IPage) => {
+  if (page.id) {
+    await updateDoc(doc(fbDb, 'pages', page.id), { name: page.name })
+  }
 }
 
 export const deletePage = async (pageId: string) => {

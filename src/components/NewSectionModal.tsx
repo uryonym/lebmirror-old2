@@ -23,7 +23,6 @@ const NewSectionModal = () => {
   }
 
   const clickCreateSection = async () => {
-    handleClose()
     const data: ISection = {
       name: sectionName,
       noteId: noteId!,
@@ -33,6 +32,7 @@ const NewSectionModal = () => {
     await addSection(data).catch((e) => {
       console.log(e)
     })
+    handleClose()
   }
 
   return (
