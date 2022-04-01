@@ -1,5 +1,5 @@
-import { Divider, List, ListItem, ListItemButton, ListItemText, Menu, MenuItem } from '@mui/material'
-import { deletePage, getPageContent, getPages } from 'api/notesApi'
+import { List, ListItem, ListItemButton, ListItemText, Menu, MenuItem } from '@mui/material'
+import firestoreApi from 'api/firestoreApi'
 import { useNote } from 'contexts/noteContext'
 import { ContextState } from 'lib/constant'
 import { IPage } from 'models'
@@ -14,7 +14,7 @@ const PageList = () => {
   useEffect(() => {
     if (sectionId) {
       const f = async () => {
-        const data = await getPages(sectionId)
+        const data = await firestoreApi.getPages(sectionId)
         setPages(data)
       }
 
@@ -25,7 +25,7 @@ const PageList = () => {
   const clickPage = async (pageId: string | undefined) => {
     setPageId(pageId)
     if (pageId) {
-      const content = await getPageContent(pageId)
+      const content = await firestoreApi.getPageContent(pageId)
       setContent(content)
     }
   }
@@ -46,7 +46,7 @@ const PageList = () => {
     const pageId = contextMenu?.value
     setContextMenu(null)
     if (pageId) {
-      await deletePage(pageId)
+      await firestoreApi.deletePage(pageId)
       setPages(pages.filter((s) => s.id !== pageId))
     }
   }

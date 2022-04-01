@@ -4,13 +4,6 @@ export type IUser = {
   uid: string | undefined
 }
 
-export type INote = {
-  name: string
-  uid: string
-  createdAt: Date | undefined
-  id: string | undefined
-}
-
 export type ISection = {
   name: string
   noteId: string

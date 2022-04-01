@@ -6,7 +6,7 @@ import { useAuth } from '../contexts/authContext'
 const App = () => {
   const { user } = useAuth()
 
-  useEffect(() =>{
+  useEffect(() => {
     document.oncontextmenu = () => false
   }, [])
 

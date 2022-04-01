@@ -6,7 +6,7 @@ import { defaultMarkdownParser, defaultMarkdownSerializer } from 'prosemirror-ma
 import applyDevTools from 'prosemirror-dev-tools'
 import pmPlugins from 'lib/pmPlugins'
 import schema from 'lib/pmSchema'
-import { updatePageContent } from 'api/notesApi'
+import firestoreApi from 'api/firestoreApi'
 import { Button, Stack } from '@mui/material'
 import { css } from '@emotion/react'
 
@@ -60,7 +60,7 @@ const Editor = () => {
 
   const clickSave = async () => {
     if (pageId && eView.current) {
-      await updatePageContent(pageId, defaultMarkdownSerializer.serialize(eView.current.state.doc))
+      await firestoreApi.updatePageContent(pageId, defaultMarkdownSerializer.serialize(eView.current.state.doc))
     }
   }
 

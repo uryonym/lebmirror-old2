@@ -1,5 +1,5 @@
 import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, TextField } from '@mui/material'
-import { addPage } from 'api/notesApi'
+import firestoreApi from 'api/firestoreApi'
 import { useNote } from 'contexts/noteContext'
 import { IPage } from 'models'
 import { ChangeEvent, useState } from 'react'
@@ -31,7 +31,7 @@ const NewPageModal = () => {
       createdAt: undefined,
       id: undefined,
     }
-    await addPage(data).catch((e) => {
+    await firestoreApi.addPage(data).catch((e) => {
       console.log(e)
     })
   }

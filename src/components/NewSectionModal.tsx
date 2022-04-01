@@ -1,14 +1,16 @@
 import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, TextField } from '@mui/material'
-import { addSection } from 'api/notesApi'
+import firestoreApi from 'api/firestoreApi'
+import { useAppSelector } from 'app/hooks'
 import { useNote } from 'contexts/noteContext'
+import { noteSelector } from 'features/note/noteSlice'
 import { ISection } from 'models'
 import { ChangeEvent, useState } from 'react'
 
 const NewSectionModal = () => {
   const [sectionName, setSectionName] = useState<string>('')
   const [open, setOpen] = useState<boolean>(false)
-  const { noteId } = useNote()
-  const isEmptyNote: boolean = noteId === undefined
+  const { currentNote } = useAppSelector(noteSelector)
+  const isEmptyNote: boolean = currentNote === undefined
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     setSectionName(e.target.value)
@@ -25,11 +27,11 @@ const NewSectionModal = () => {
   const clickCreateSection = async () => {
     const data: ISection = {
       name: sectionName,
-      noteId: noteId!,
+      noteId: currentNote!.id!,
       createdAt: undefined,
       id: undefined,
     }
-    await addSection(data).catch((e) => {
+    await firestoreApi.addSection(data).catch((e) => {
       console.log(e)
     })
     handleClose()

@@ -1,8 +1,8 @@
-import { addNote } from 'api/notesApi'
+import firestoreApi from 'api/firestoreApi'
 import { useAuth } from 'contexts/authContext'
-import { INote } from 'models'
 import { ChangeEvent, useState } from 'react'
 import { Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField } from '@mui/material'
+import { INote } from 'features/note/noteSlice'
 
 const NewNoteModal = () => {
   const { user } = useAuth()
@@ -26,10 +26,10 @@ const NewNoteModal = () => {
     const data: INote = {
       name: noteName,
       uid: user?.uid ?? '',
-      createdAt: undefined,
+      createdAt: new Date(),
       id: undefined,
     }
-    await addNote(data).catch((e) => {
+    await firestoreApi.addNote(data).catch((e) => {
       console.log(e)
     })
   }

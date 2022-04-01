@@ -55,7 +55,8 @@ module.exports = {
     'no-console': 'off',
     'react-hooks/exhaustive-deps': 'off',
     'jsx-a11y/click-events-have-key-events': 'off',
-    'jsx-a11y/no-noninteractive-element-interactions': 'off'
+    'jsx-a11y/no-noninteractive-element-interactions': 'off',
+    'class-methods-use-this': 'off',
   },
   settings: {
     'import/resolver': {

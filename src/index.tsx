@@ -1,21 +1,25 @@
 import { StrictMode } from 'react'
 import ReactDOM from 'react-dom'
 import './index.scss'
-import { NoteProvider } from 'contexts/noteContext'
 import { CssBaseline, ThemeProvider } from '@mui/material'
 import muiTheme from 'lib/muiTheme'
-import App from './components/App'
+import { Provider } from 'react-redux'
+import { AuthProvider } from 'contexts/authContext'
+import { NoteProvider } from 'contexts/noteContext'
+import { store } from 'app/store'
 import reportWebVitals from './reportWebVitals'
-import { AuthProvider } from './contexts/authContext'
+import App from './components/App'
 
 ReactDOM.render(
   <StrictMode>
     <AuthProvider>
       <NoteProvider>
-        <ThemeProvider theme={muiTheme}>
-          <CssBaseline />
-          <App />
-        </ThemeProvider>
+        <Provider store={store}>
+          <ThemeProvider theme={muiTheme}>
+            <CssBaseline />
+            <App />
+          </ThemeProvider>
+        </Provider>
       </NoteProvider>
     </AuthProvider>
   </StrictMode>,

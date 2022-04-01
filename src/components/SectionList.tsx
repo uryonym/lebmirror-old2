@@ -3,9 +3,7 @@ import {
   Dialog,
   DialogActions,
   DialogContent,
-  DialogContentText,
   DialogTitle,
-  Divider,
   List,
   ListItem,
   ListItemButton,
@@ -14,8 +12,10 @@ import {
   MenuItem,
   TextField,
 } from '@mui/material'
-import { deleteSection, getSections, updateSection } from 'api/notesApi'
+import firestoreApi from 'api/firestoreApi'
+import { useAppSelector } from 'app/hooks'
 import { useNote } from 'contexts/noteContext'
+import { noteSelector } from 'features/note/noteSlice'
 import { ContextState } from 'lib/constant'
 import { ISection } from 'models'
 import { useEffect, useState, MouseEvent, ChangeEvent } from 'react'
@@ -27,18 +27,19 @@ const SectionList = () => {
   const [sectionName, setSectionName] = useState<string>('')
   const [renameSectionId, setRenameSectionId] = useState<string>('')
   const [open, setOpen] = useState<boolean>(false)
-  const { noteId, setSectionId } = useNote()
+  const { setSectionId } = useNote()
+  const { currentNote } = useAppSelector(noteSelector)
 
   useEffect(() => {
-    if (noteId) {
+    if (currentNote) {
       const f = async () => {
-        const data = await getSections(noteId)
+        const data = await firestoreApi.getSections(currentNote.id!)
         setSections(data)
       }
 
       f().catch((e) => console.log(e))
     }
-  }, [noteId])
+  }, [currentNote])
 
   const handleClickSection = (sectionId: string | undefined) => {
     setSectionId(sectionId)
@@ -64,7 +65,7 @@ const SectionList = () => {
     const sectionId = contextMenu?.value
     handleContextClose()
     if (sectionId) {
-      await deleteSection(sectionId).catch((e) => {
+      await firestoreApi.deleteSection(sectionId).catch((e) => {
         console.log(e)
       })
       setSections(sections.filter((s) => s.id !== sectionId))
@@ -96,11 +97,11 @@ const SectionList = () => {
   const handleRenameSection = async () => {
     const data: ISection = {
       name: sectionName,
-      noteId: noteId!,
+      noteId: currentNote!.id!,
       createdAt: undefined,
       id: renameSectionId,
     }
-    await updateSection(data).catch((e) => {
+    await firestoreApi.updateSection(data).catch((e) => {
       console.log(e)
     })
     const section = sections.find((x) => x.id === renameSectionId)
