@@ -27,7 +27,7 @@ export const fetchAllNotes = createAsyncThunk('note/fetchAll', async (_, { rejec
     const result = await firestoreApi.getNotes()
     return { notes: result }
   } catch (e) {
-    return rejectWithValue('データ取得に失敗しました')
+    return rejectWithValue('データ取得（note/fetchAll）に失敗しました')
   }
 })
 
