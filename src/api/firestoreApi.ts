@@ -1,15 +1,30 @@
 import { collection, doc, getDocs, QuerySnapshot, Timestamp, addDoc, where, query, updateDoc, getDoc, deleteDoc } from 'firebase/firestore'
 import { fbDb } from 'firebaseConfig'
-import { IPage, ISection } from 'models'
+import { IPage } from 'models'
 import { INote } from 'features/note/noteSlice'
+import { ISection } from 'features/section/sectionSlice'
+
+export type FSNote = {
+  name: string
+  uid: string
+  createdAt: Timestamp
+  id: string | undefined
+}
+
+export type FSSection = {
+  name: string
+  noteId: string
+  createdAt: Timestamp
+  id: string | undefined
+}
 
 class FirestoreApi {
   getNotes = async () => {
-    const snapShot = (await getDocs(collection(fbDb, 'notes'))) as QuerySnapshot<INote>
+    const snapShot = (await getDocs(collection(fbDb, 'notes'))) as QuerySnapshot<FSNote>
     const data: INote[] = snapShot.docs.map((document) => ({
       name: document.data().name,
       uid: document.data().uid,
-      createdAt: document.data().createdAt,
+      createdAt: document.data().createdAt.toDate(),
       id: document.id,
     }))
     return data
@@ -25,11 +40,11 @@ class FirestoreApi {
   }
 
   getSections = async (noteId: string) => {
-    const snapShot = (await getDocs(query(collection(fbDb, 'sections'), where('noteId', '==', noteId)))) as QuerySnapshot<ISection>
+    const snapShot = (await getDocs(query(collection(fbDb, 'sections'), where('noteId', '==', noteId)))) as QuerySnapshot<FSSection>
     const data: ISection[] = snapShot.docs.map((document) => ({
       name: document.data().name,
       noteId: document.data().noteId,
-      createdAt: document.data().createdAt,
+      createdAt: document.data().createdAt.toDate(),
       id: document.id,
     }))
     return data

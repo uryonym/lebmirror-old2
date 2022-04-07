@@ -1,9 +1,8 @@
 import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, TextField } from '@mui/material'
 import firestoreApi from 'api/firestoreApi'
 import { useAppSelector } from 'app/hooks'
-import { useNote } from 'contexts/noteContext'
 import { noteSelector } from 'features/note/noteSlice'
-import { ISection } from 'models'
+import { ISection } from 'features/section/sectionSlice'
 import { ChangeEvent, useState } from 'react'
 
 const NewSectionModal = () => {
@@ -28,7 +27,7 @@ const NewSectionModal = () => {
     const data: ISection = {
       name: sectionName,
       noteId: currentNote!.id!,
-      createdAt: undefined,
+      createdAt: new Date(),
       id: undefined,
     }
     await firestoreApi.addSection(data).catch((e) => {

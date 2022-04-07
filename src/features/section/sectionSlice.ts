@@ -31,6 +31,24 @@ export const fetchAllSections = createAsyncThunk('section/fetchAll', async (note
   }
 })
 
+export const updateSection = createAsyncThunk('section/update', async (section: ISection, { rejectWithValue }) => {
+  try {
+    await firestoreApi.updateSection(section)
+    return { section }
+  } catch (e) {
+    return rejectWithValue('データ更新（section/update）に失敗しました')
+  }
+})
+
+export const deleteSection = createAsyncThunk('section/delete', async (sectionId: string, { rejectWithValue }) => {
+  try {
+    await firestoreApi.deleteSection(sectionId)
+    return { sectionId }
+  } catch (e) {
+    return rejectWithValue('データ削除（section/delete）に失敗しました')
+  }
+})
+
 // Slice Method
 export const sectionsSlice = createSlice({
   name: 'section',
@@ -43,12 +61,31 @@ export const sectionsSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
+      // fetchAllSections
       .addCase(fetchAllSections.pending, (state) => ({ ...state, status: 'loading' }))
       .addCase(fetchAllSections.fulfilled, (state, action) => {
         const { sections } = action.payload
-        return { ...state, status: 'idle', sections }
+        return { ...state, sections, status: 'idle' }
       })
       .addCase(fetchAllSections.rejected, (state) => ({ ...state, status: 'failed' }))
+
+      // updateSection
+      .addCase(updateSection.pending, (state) => ({ ...state, status: 'loading' }))
+      .addCase(updateSection.fulfilled, (state, action) => {
+        const { section } = action.payload
+        const sections = state.sections.map((s) => (s.id === section.id ? section : s))
+        return { ...state, sections, status: 'idle' }
+      })
+      .addCase(updateSection.rejected, (state) => ({ ...state, status: 'failed' }))
+
+      // deleteSection
+      .addCase(deleteSection.pending, (state) => ({ ...state, status: 'loading' }))
+      .addCase(deleteSection.fulfilled, (state, action) => {
+        const { sectionId } = action.payload
+        const sections = state.sections.filter((s) => s.id !== sectionId)
+        return { ...state, sections, status: 'idle' }
+      })
+      .addCase(deleteSection.rejected, (state) => ({ ...state, status: 'failed' }))
   },
 })
 

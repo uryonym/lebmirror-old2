@@ -12,37 +12,33 @@ import {
   MenuItem,
   TextField,
 } from '@mui/material'
-import firestoreApi from 'api/firestoreApi'
-import { useAppSelector } from 'app/hooks'
-import { useNote } from 'contexts/noteContext'
+import { useAppDispatch, useAppSelector } from 'app/hooks'
 import { noteSelector } from 'features/note/noteSlice'
+import { deleteSection, fetchAllSections, ISection, sectionSelector, setCurrentSection, updateSection } from 'features/section/sectionSlice'
 import { ContextState } from 'lib/constant'
-import { ISection } from 'models'
 import { useEffect, useState, MouseEvent, ChangeEvent } from 'react'
 import NewSectionModal from './NewSectionModal'
 
 const SectionList = () => {
-  const [sections, setSections] = useState<ISection[]>([])
   const [contextMenu, setContextMenu] = useState<ContextState | null>(null)
   const [sectionName, setSectionName] = useState<string>('')
   const [renameSectionId, setRenameSectionId] = useState<string>('')
   const [open, setOpen] = useState<boolean>(false)
-  const { setSectionId } = useNote()
+
+  const { sections } = useAppSelector(sectionSelector)
   const { currentNote } = useAppSelector(noteSelector)
+  const dispatch = useAppDispatch()
 
   useEffect(() => {
     if (currentNote) {
-      const f = async () => {
-        const data = await firestoreApi.getSections(currentNote.id!)
-        setSections(data)
-      }
-
-      f().catch((e) => console.log(e))
+      dispatch(fetchAllSections(currentNote.id!)).catch((e) => console.log(e))
     }
   }, [currentNote])
 
   const handleClickSection = (sectionId: string | undefined) => {
-    setSectionId(sectionId)
+    if (sectionId) {
+      dispatch(setCurrentSection(sectionId))
+    }
   }
 
   const handleContextMenu = (e: MouseEvent<HTMLDivElement>, sectionId: string | undefined) => {
@@ -61,14 +57,11 @@ const SectionList = () => {
     setContextMenu(null)
   }
 
-  const handleDeleteSection = async () => {
+  const handleDeleteSection = () => {
     const sectionId = contextMenu?.value
     handleContextClose()
     if (sectionId) {
-      await firestoreApi.deleteSection(sectionId).catch((e) => {
-        console.log(e)
-      })
-      setSections(sections.filter((s) => s.id !== sectionId))
+      dispatch(deleteSection(sectionId)).catch((e) => console.log(e))
     }
   }
 
@@ -94,20 +87,11 @@ const SectionList = () => {
     setSectionName(e.target.value)
   }
 
-  const handleRenameSection = async () => {
-    const data: ISection = {
-      name: sectionName,
-      noteId: currentNote!.id!,
-      createdAt: undefined,
-      id: renameSectionId,
-    }
-    await firestoreApi.updateSection(data).catch((e) => {
-      console.log(e)
-    })
-    const section = sections.find((x) => x.id === renameSectionId)
+  const handleRenameSection = () => {
+    const section = sections.find((s) => s.id === renameSectionId)
     if (section) {
-      section.name = sectionName
-      setSections(sections)
+      const renameSection: ISection = { ...section, name: sectionName }
+      dispatch(updateSection(renameSection)).catch((e) => console.log(e))
     }
     handleModalClose()
   }
