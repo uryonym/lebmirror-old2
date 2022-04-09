@@ -1,13 +1,14 @@
-import firestoreApi from 'api/firestoreApi'
 import { useAuth } from 'contexts/authContext'
 import { ChangeEvent, useState } from 'react'
 import { Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField } from '@mui/material'
-import { INote } from 'features/note/noteSlice'
+import { createNote, INote } from 'features/note/noteSlice'
+import { useAppDispatch } from 'app/hooks'
 
 const NewNoteModal = () => {
   const { user } = useAuth()
   const [noteName, setNoteName] = useState<string>('')
   const [open, setOpen] = useState<boolean>(false)
+  const dispatch = useAppDispatch()
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     setNoteName(e.target.value)
@@ -21,17 +22,17 @@ const NewNoteModal = () => {
     setOpen(false)
   }
 
-  const clickCreateNote = async () => {
-    handleClose()
+  const clickCreateNote = () => {
     const data: INote = {
       name: noteName,
       uid: user?.uid ?? '',
       createdAt: new Date(),
       id: undefined,
     }
-    await firestoreApi.addNote(data).catch((e) => {
+    dispatch(createNote(data)).catch((e) => {
       console.log(e)
     })
+    handleClose()
   }
 
   return (

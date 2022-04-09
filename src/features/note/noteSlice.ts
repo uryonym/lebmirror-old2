@@ -31,6 +31,15 @@ export const fetchAllNotes = createAsyncThunk('note/fetchAll', async (_, { rejec
   }
 })
 
+export const createNote = createAsyncThunk('note/create', async (note: INote, { rejectWithValue }) => {
+  try {
+    const id = await firestoreApi.addNote(note)
+    return { note: { ...note, id } as INote }
+  } catch (e) {
+    return rejectWithValue('データ作成（note/create）に失敗しました')
+  }
+})
+
 // Slice Method
 export const noteSlice = createSlice({
   name: 'note',
@@ -43,12 +52,22 @@ export const noteSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
+      // fetchAllNotes
       .addCase(fetchAllNotes.pending, (state) => ({ ...state, status: 'loading' }))
       .addCase(fetchAllNotes.fulfilled, (state, action) => {
         const { notes } = action.payload
         return { ...state, status: 'idle', notes }
       })
       .addCase(fetchAllNotes.rejected, (state) => ({ ...state, status: 'failed' }))
+
+      // createNote
+      .addCase(createNote.pending, (state) => ({ ...state, status: 'loading' }))
+      .addCase(createNote.fulfilled, (state, action) => {
+        const { note } = action.payload
+        const notes = state.notes.concat(note)
+        return { ...state, notes, status: 'idle' }
+      })
+      .addCase(createNote.rejected, (state) => ({ ...state, status: 'failed' }))
   },
 })
 
