@@ -31,6 +31,15 @@ export const fetchAllSections = createAsyncThunk('section/fetchAll', async (note
   }
 })
 
+export const createSection = createAsyncThunk('section/create', async (section: ISection, { rejectWithValue }) => {
+  try {
+    const id = await firestoreApi.addSection(section)
+    return { section: { ...section, id } as ISection }
+  } catch (e) {
+    return rejectWithValue('データ作成（section/create）に失敗しました')
+  }
+})
+
 export const updateSection = createAsyncThunk('section/update', async (section: ISection, { rejectWithValue }) => {
   try {
     await firestoreApi.updateSection(section)
@@ -68,6 +77,15 @@ export const sectionsSlice = createSlice({
         return { ...state, sections, status: 'idle' }
       })
       .addCase(fetchAllSections.rejected, (state) => ({ ...state, status: 'failed' }))
+
+      // createSection
+      .addCase(createSection.pending, (state) => ({ ...state, status: 'loading' }))
+      .addCase(createSection.fulfilled, (state, action) => {
+        const { section } = action.payload
+        const sections = state.sections.concat(section)
+        return { ...state, sections, status: 'idle' }
+      })
+      .addCase(createSection.rejected, (state) => ({ ...state, status: 'failed' }))
 
       // updateSection
       .addCase(updateSection.pending, (state) => ({ ...state, status: 'loading' }))

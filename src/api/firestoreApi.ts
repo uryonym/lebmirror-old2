@@ -56,7 +56,8 @@ class FirestoreApi {
       noteId: section.noteId,
       createdAt: Timestamp.now(),
     }
-    await addDoc(collection(fbDb, 'sections'), data)
+    const docRef = await addDoc(collection(fbDb, 'sections'), data)
+    return docRef.id
   }
 
   updateSection = async (section: ISection) => {
